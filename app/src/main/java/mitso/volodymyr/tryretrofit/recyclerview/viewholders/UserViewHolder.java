@@ -1,4 +1,4 @@
-package mitso.volodymyr.tryretrofit.recyclerview;
+package mitso.volodymyr.tryretrofit.recyclerview.viewholders;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;

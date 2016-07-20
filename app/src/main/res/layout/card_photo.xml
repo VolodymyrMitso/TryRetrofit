@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="user"
-            type="mitso.volodymyr.tryretrofit.models.User" />
-
-        <variable
-            name="clicker"
-            type="android.view.View.OnClickListener" />
+            name="photo"
+            type="mitso.volodymyr.tryretrofit.models.Photo" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:onClickListener="@{clicker}">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{user.name}"
+            android:text="@{photo.title}"
             android:textColor="@color/c_card_text"
             android:textSize="@dimen/d_card_text_size"
-            tools:text="user name" />
+            tools:text="photo title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{photo.url}"
+            android:textColor="@color/c_card_text"
+            android:textSize="@dimen/d_card_text_size"
+            tools:text="photo url" />
 
         <View
             android:layout_width="match_parent"

@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="user"
-            type="mitso.volodymyr.tryretrofit.models.User" />
+            name="todo"
+            type="mitso.volodymyr.tryretrofit.models.Todo" />
 
         <variable
             name="clicker"
@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{user.name}"
+            android:text="@{todo.toString()}"
             android:textColor="@color/c_card_text"
             android:textSize="@dimen/d_card_text_size"
-            tools:text="user name" />
+            tools:text="todo id" />
 
         <View
             android:layout_width="match_parent"

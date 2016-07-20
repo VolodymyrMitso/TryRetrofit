@@ -2,29 +2,30 @@ package mitso.volodymyr.tryretrofit.models;
 
 // @Generated("org.jsonschema2pojo")
 
-public class Todo {
+public class Photo {
 
-    private int userId;
+    private int albumId;
     private int id;
     private String title;
-    private boolean completed;
+    private String url;
+    private String thumbnailUrl;
 
     /**
      *
      * @return
-     * The userId
+     * The albumId
      */
-    public int getUserId() {
-        return userId;
+    public int getAlbumId() {
+        return albumId;
     }
 
     /**
      *
-     * @param userId
-     * The userId
+     * @param albumId
+     * The albumId
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setAlbumId(int albumId) {
+        this.albumId = albumId;
     }
 
     /**
@@ -66,28 +67,36 @@ public class Todo {
     /**
      *
      * @return
-     * The completed
+     * The url
      */
-    public boolean isCompleted() {
-        return completed;
+    public String getUrl() {
+        return url;
     }
 
     /**
      *
-     * @param completed
-     * The completed
+     * @param url
+     * The url
      */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    @Override
-    public String toString() {
-        return
-                "Todo Info" +
-                "\nuserId = " + userId +
-                "\nid = " + id +
-                "\ntitle = " + title +
-                "\ncompleted = " + completed;
+    /**
+     *
+     * @return
+     * The thumbnailUrl
+     */
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    /**
+     *
+     * @param thumbnailUrl
+     * The thumbnailUrl
+     */
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

@@ -7,7 +7,7 @@ import mitso.volodymyr.tryretrofit.MainActivity;
 
 public class BaseFragment extends Fragment {
 
-    MainActivity        mMainActivity;
+    protected MainActivity        mMainActivity;
 
     @Override
     public void onAttach(Context _context) {

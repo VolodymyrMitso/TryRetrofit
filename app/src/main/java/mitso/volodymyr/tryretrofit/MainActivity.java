@@ -1,11 +1,11 @@
 package mitso.volodymyr.tryretrofit;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
-import mitso.volodymyr.tryretrofit.fragments.UserListFragment;
+import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,35 +35,3 @@ public class MainActivity extends AppCompatActivity {
         baseFragment.onBackPressed();
     }
 }
-
-//        final Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(Constants.BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-
-//                final IConnection connection = retrofit.create(IConnection.class);
-//                final Call<List<User>> call = connection.getAllUsers();
-//                Response<List<User>> response = null;
-//                try {
-//                    response = call.execute();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                if (response != null) {
-//                    final List<User> userList = response.body();
-//                    for (int i = 0; i < userList.size(); i++)
-//                        Log.i(LOG_TAG, userList.get(i).toString());
-//                }
-
-//                final IConnection connection = retrofit.create(IConnection.class);
-//                final Call<User> call = connection.getUserById(7);
-//                Response<User> response = null;
-//                try {
-//                    response = call.execute();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                if (response != null) {
-//                    final User user = response.body();
-//                    Log.i(LOG_TAG, user.toString());
-//                }

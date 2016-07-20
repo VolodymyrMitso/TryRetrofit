@@ -1,3 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TryRetrofit</string>
+
+    <string name="s_app_name">TryRetrofit</string>
+
+    <string name="s_users">Users</string>
+    <string name="s_todos">Todos</string>
+    <string name="s_albums">Albums</string>
+    <string name="s_posts">Posts</string>
+    <string name="s_photos">Photos</string>
+
+    <string name="s_user_info">User Info</string>
+
 </resources>

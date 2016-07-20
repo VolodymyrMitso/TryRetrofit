@@ -64,11 +64,11 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
-                "name='" + name + '\'' +
-                ", catchPhrase='" + catchPhrase + '\'' +
-                ", bs='" + bs + '\'' +
-                '}';
+        return
+                "\n    Company Info:" +
+                "\n    name = " + name +
+                "\n    catchPhrase = " + catchPhrase +
+                "\n    bs = " + bs;
     }
 }
 
