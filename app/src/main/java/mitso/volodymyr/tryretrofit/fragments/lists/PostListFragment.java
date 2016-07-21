@@ -22,10 +22,13 @@ import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
 import mitso.volodymyr.tryretrofit.recyclerview.ICommonHandler;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
+import mitso.volodymyr.tryretrofit.support.Support;
 
 public class PostListFragment extends BaseFragment implements ICommonHandler {
 
     private final String                    LOG_TAG = Constants.POST_LIST_FRAGMENT_LOG_TAG;
+
+    private Support                         mSupport;
 
     private FragmentCommonListBinding       mBinding;
 
@@ -44,12 +47,19 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
 
         Log.i(LOG_TAG, "POST LIST FRAGMENT IS CREATED.");
 
+        mSupport = new Support();
+
         iniActionBar();
 
         receiveUserId();
 
-        if (!isUserIdNull)
-            getAlbumsByUserId();
+        if (mSupport.checkNetworkConnection(mMainActivity))
+            if (!isUserIdNull)
+                getPostsByUserId();
+            else
+                mSupport.showToastError(mMainActivity);
+        else
+            mSupport.showToastNoConnection(mMainActivity);
 
         return rootView;
     }
@@ -76,7 +86,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
         }
     }
 
-    public void getAlbumsByUserId() {
+    public void getPostsByUserId() {
 
         final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_POST, mUserId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
@@ -98,6 +108,8 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
 
                 Log.i(getObjectsTask.LOG_TAG, "ON FAILURE");
                 _error.printStackTrace();
+
+                mSupport.showToastError(mMainActivity);
 
                 getObjectsTask.releaseCallback();
             }
@@ -158,7 +170,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
-    public void onClick(Object _object, int _position) {
+    public void itemOnClick(Object _object, int _position) {
 
         Toast.makeText(mMainActivity, _object.toString(), Toast.LENGTH_SHORT).show();
     }

@@ -74,7 +74,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             userViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.onClick(user, userViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(user, userViewHolder.getAdapterPosition());
                 }
             });
 
@@ -87,7 +87,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             todoViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.onClick(todo, todoViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(todo, todoViewHolder.getAdapterPosition());
                 }
             });
 
@@ -100,7 +100,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             albumViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.onClick(album, albumViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(album, albumViewHolder.getAdapterPosition());
                 }
             });
 
@@ -113,7 +113,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             postViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.onClick(post, postViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(post, postViewHolder.getAdapterPosition());
                 }
             });
 

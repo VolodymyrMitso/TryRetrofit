@@ -22,10 +22,13 @@ import mitso.volodymyr.tryretrofit.models.User;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
 import mitso.volodymyr.tryretrofit.recyclerview.ICommonHandler;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
+import mitso.volodymyr.tryretrofit.support.Support;
 
 public class UserListFragment extends BaseFragment implements ICommonHandler {
 
     private final String                    LOG_TAG = Constants.USER_LIST_FRAGMENT_LOG_TAG;
+
+    private Support                         mSupport;
 
     private FragmentCommonListBinding       mBinding;
 
@@ -41,9 +44,14 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
 
         Log.i(LOG_TAG, "USER LIST FRAGMENT IS CREATED.");
 
+        mSupport = new Support();
+
         iniActionBar();
 
-        getAllUsers();
+        if (mSupport.checkNetworkConnection(mMainActivity))
+            getAllUsers();
+        else
+            mSupport.showToastNoConnection(mMainActivity);
 
         return rootView;
     }
@@ -74,8 +82,10 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
                 _error.printStackTrace();
+
+                mSupport.showToastError(mMainActivity);
 
                 getObjectsTask.releaseCallback();
             }
@@ -129,7 +139,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
-    public void onClick(Object _object, int _position) {
+    public void itemOnClick(Object _object, int _position) {
 
         final int id = ((User) _object).getId();
         final Bundle bundle = new Bundle();

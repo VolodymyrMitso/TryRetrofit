@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,18 @@ import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
-import mitso.volodymyr.tryretrofit.recyclerview.ICommonHandler;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
+import mitso.volodymyr.tryretrofit.support.Support;
 
-public class TodoListFragment extends BaseFragment implements ICommonHandler {
+public class TodoListFragment extends BaseFragment {
 
     private final String                    LOG_TAG = Constants.TODO_LIST_FRAGMENT_LOG_TAG;
+
+    private Support                         mSupport;
 
     private FragmentCommonListBinding       mBinding;
 
     private List<Object>                    mTodoList;
-    private CommonAdapter                   mCommonAdapter;
 
     private Integer                         mUserId;
     private boolean                         isUserIdNull;
@@ -44,12 +44,19 @@ public class TodoListFragment extends BaseFragment implements ICommonHandler {
 
         Log.i(LOG_TAG, "TODO LIST FRAGMENT IS CREATED.");
 
+        mSupport = new Support();
+
         iniActionBar();
 
         receiveUserId();
 
-        if (!isUserIdNull)
-            getTodosByUserId();
+        if (mSupport.checkNetworkConnection(mMainActivity))
+            if (!isUserIdNull)
+                getTodosByUserId();
+            else
+                mSupport.showToastError(mMainActivity);
+        else
+            mSupport.showToastNoConnection(mMainActivity);
 
         return rootView;
     }
@@ -88,7 +95,6 @@ public class TodoListFragment extends BaseFragment implements ICommonHandler {
                 mTodoList = new ArrayList<>(_result);
 
                 initRecyclerView();
-                setHandler();
 
                 getObjectsTask.releaseCallback();
             }
@@ -96,8 +102,10 @@ public class TodoListFragment extends BaseFragment implements ICommonHandler {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
                 _error.printStackTrace();
+
+                mSupport.showToastError(mMainActivity);
 
                 getObjectsTask.releaseCallback();
             }
@@ -107,40 +115,13 @@ public class TodoListFragment extends BaseFragment implements ICommonHandler {
 
     private void initRecyclerView() {
 
-        mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_TODO, mTodoList);
-        mBinding.rvModels.setAdapter(mCommonAdapter);
+        mBinding.rvModels.setAdapter(new CommonAdapter(Constants.VIEW_TYPE_TODO, mTodoList));
         mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
         mBinding.rvModels.addItemDecoration(new ItemDecoration(
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_small),
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_big)));
 
         Log.i(LOG_TAG, "RECYCLER VIEW IS CREATED.");
-    }
-
-    private void setHandler() {
-
-        if (mCommonAdapter != null)
-            mCommonAdapter.setCommonHandler(this);
-    }
-
-    private void releaseHandler() {
-
-        if (mCommonAdapter != null)
-            mCommonAdapter.releaseCommonHandler();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        setHandler();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        releaseHandler();
     }
 
     @Override
@@ -155,12 +136,6 @@ public class TodoListFragment extends BaseFragment implements ICommonHandler {
 
         } else
             mMainActivity.commitFragment(new UserListFragment(), null);
-    }
-
-    @Override
-    public void onClick(Object _object, int _position) {
-
-        Toast.makeText(mMainActivity, _object.toString(), Toast.LENGTH_SHORT).show();
     }
 }
 

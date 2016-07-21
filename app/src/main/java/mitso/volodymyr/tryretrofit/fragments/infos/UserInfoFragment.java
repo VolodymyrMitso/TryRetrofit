@@ -18,10 +18,13 @@ import mitso.volodymyr.tryretrofit.fragments.lists.PostListFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.TodoListFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
 import mitso.volodymyr.tryretrofit.models.User;
+import mitso.volodymyr.tryretrofit.support.Support;
 
 public class UserInfoFragment extends BaseFragment {
 
     private final String                    LOG_TAG = Constants.USER_FRAGMENT_LOG_TAG;
+
+    private Support                         mSupport;
 
     private FragmentUserInfoBinding         mBinding;
 
@@ -37,12 +40,19 @@ public class UserInfoFragment extends BaseFragment {
 
         Log.i(LOG_TAG, "USER INFO FRAGMENT IS CREATED.");
 
+        mSupport = new Support();
+
         iniActionBar();
 
         receiveId();
 
-        if (!isUserIdNull)
-            getUserId();
+        if (mSupport.checkNetworkConnection(mMainActivity))
+            if (!isUserIdNull)
+                getUserById();
+            else
+                mSupport.showToastError(mMainActivity);
+        else
+            mSupport.showToastNoConnection(mMainActivity);
 
         return rootView;
     }
@@ -69,7 +79,7 @@ public class UserInfoFragment extends BaseFragment {
         }
     }
 
-    public void getUserId() {
+    public void getUserById() {
 
         final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_USER, mUserId);
         getObjectTask.setCallback(new GetObjectTask.Callback() {
@@ -91,6 +101,8 @@ public class UserInfoFragment extends BaseFragment {
 
                 Log.i(getObjectTask.LOG_TAG, "ON FAILURE");
                 _error.printStackTrace();
+
+                mSupport.showToastError(mMainActivity);
 
                 getObjectTask.releaseCallback();
             }

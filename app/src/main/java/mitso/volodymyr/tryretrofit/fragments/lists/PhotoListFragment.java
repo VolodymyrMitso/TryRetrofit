@@ -19,20 +19,22 @@ import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
+import mitso.volodymyr.tryretrofit.support.Support;
 
 public class PhotoListFragment extends BaseFragment {
 
     private final String                    LOG_TAG = Constants.PHOTO_LIST_FRAGMENT_LOG_TAG;
 
+    private Support                         mSupport;
+
     private FragmentCommonListBinding       mBinding;
 
     private List<Object>                    mPhotoList;
-    private CommonAdapter                   mCommonAdapter;
 
     private Integer                         mAlbumId;
     private boolean                         isAlbumIdNull;
     private Integer                         mUserId;
-    private boolean                         isUserINull;
+    private boolean                         isUserIdNull;
 
     @Nullable
     @Override
@@ -43,13 +45,20 @@ public class PhotoListFragment extends BaseFragment {
 
         Log.i(LOG_TAG, "PHOTO LIST FRAGMENT IS CREATED.");
 
+        mSupport = new Support();
+
         iniActionBar();
 
         receiveAlbumId();
         receiveUserId();
 
-        if (!isAlbumIdNull)
-            getPhotosByAlbumId();
+        if (mSupport.checkNetworkConnection(mMainActivity))
+            if (!isAlbumIdNull)
+                getPhotosByAlbumId();
+            else
+                mSupport.showToastError(mMainActivity);
+        else
+            mSupport.showToastNoConnection(mMainActivity);
 
         return rootView;
     }
@@ -81,12 +90,12 @@ public class PhotoListFragment extends BaseFragment {
         try {
             mUserId = getArguments().getInt(Constants.USER_ID_BUNDLE_KEY);
 
-            isUserINull = false;
+            isUserIdNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
 
         } catch (NullPointerException _error) {
 
-            isUserINull = true;
+            isUserIdNull = true;
             Log.e(LOG_TAG, "USER ID IS NOT RECEIVED. USER ID IS NULL.");
             _error.printStackTrace();
         }
@@ -111,8 +120,10 @@ public class PhotoListFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
                 _error.printStackTrace();
+
+                mSupport.showToastError(mMainActivity);
 
                 getObjectsTask.releaseCallback();
             }
@@ -122,8 +133,7 @@ public class PhotoListFragment extends BaseFragment {
 
     private void initRecyclerView() {
 
-        mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_PHOTO, mPhotoList);
-        mBinding.rvModels.setAdapter(mCommonAdapter);
+        mBinding.rvModels.setAdapter(new CommonAdapter(Constants.VIEW_TYPE_PHOTO, mPhotoList));
         mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
         mBinding.rvModels.addItemDecoration(new ItemDecoration(
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_small),
@@ -136,7 +146,7 @@ public class PhotoListFragment extends BaseFragment {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!isUserINull) {
+        if (!isUserIdNull) {
 
             final Bundle bundle = new Bundle();
             bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
