@@ -11,23 +11,24 @@ import android.view.ViewGroup;
 import mitso.volodymyr.tryretrofit.R;
 import mitso.volodymyr.tryretrofit.api.tasks.GetObjectTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
-import mitso.volodymyr.tryretrofit.databinding.FragmentUserInfoBinding;
+import mitso.volodymyr.tryretrofit.databinding.FragmentCommentInfoBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
-import mitso.volodymyr.tryretrofit.fragments.lists.AlbumListFragment;
-import mitso.volodymyr.tryretrofit.fragments.lists.PostListFragment;
-import mitso.volodymyr.tryretrofit.fragments.lists.TodoListFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
-import mitso.volodymyr.tryretrofit.models.User;
+import mitso.volodymyr.tryretrofit.models.Comment;
 import mitso.volodymyr.tryretrofit.support.Support;
 
-public class UserInfoFragment extends BaseFragment {
+public class CommentInfoFragment extends BaseFragment {
 
-    private final String                    LOG_TAG = Constants.USER_INFO_FRAGMENT_LOG_TAG;
+    private final String                    LOG_TAG = Constants.COMMENT_INFO_FRAGMENT_LOG_TAG;
 
     private Support                         mSupport;
 
-    private FragmentUserInfoBinding         mBinding;
+    private FragmentCommentInfoBinding      mBinding;
 
+    private Integer                         mCommentId;
+    private boolean                         isCommentIdNull;
+    private Integer                         mPostId;
+    private boolean                         isPostIdNull;
     private Integer                         mUserId;
     private boolean                         isUserIdNull;
 
@@ -35,20 +36,22 @@ public class UserInfoFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
 
-        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_user_info, _container, false);
+        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_comment_info, _container, false);
         final View rootView = mBinding.getRoot();
 
-        Log.i(LOG_TAG, "USER INFO FRAGMENT IS CREATED.");
+        Log.i(LOG_TAG, "COMMENT INFO FRAGMENT IS CREATED.");
 
         mSupport = new Support();
 
         iniActionBar();
 
+        receiveCommentId();
+        receivePostId();
         receiveUserId();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isUserIdNull)
-                getUserById();
+            if (!isCommentIdNull)
+                getCommentById();
             else
                 mSupport.showToastError(mMainActivity);
         else
@@ -60,7 +63,39 @@ public class UserInfoFragment extends BaseFragment {
     private void iniActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null)
-            mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_user_info));
+            mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_comment_info));
+    }
+
+    private void receiveCommentId() {
+
+        try {
+            mCommentId = getArguments().getInt(Constants.COMMENT_ID_BUNDLE_KEY);
+
+            isCommentIdNull = false;
+            Log.i(LOG_TAG, "COMMENT ID IS RECEIVED: " + String.valueOf(mCommentId) + ".");
+
+        } catch (NullPointerException _error) {
+
+            isCommentIdNull = true;
+            Log.e(LOG_TAG, "COMMENT ID IS NOT RECEIVED. COMMENT ID IS NULL.");
+            _error.printStackTrace();
+        }
+    }
+
+    private void receivePostId() {
+
+        try {
+            mPostId = getArguments().getInt(Constants.POST_ID_BUNDLE_KEY);
+
+            isPostIdNull = false;
+            Log.i(LOG_TAG, "POST ID IS RECEIVED: " + String.valueOf(mPostId) + ".");
+
+        } catch (NullPointerException _error) {
+
+            isPostIdNull = true;
+            Log.e(LOG_TAG, "POST ID IS NOT RECEIVED. POST ID IS NULL.");
+            _error.printStackTrace();
+        }
     }
 
     private void receiveUserId() {
@@ -79,19 +114,17 @@ public class UserInfoFragment extends BaseFragment {
         }
     }
 
-    public void getUserById() {
+    public void getCommentById() {
 
-        final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_USER, mUserId);
+        final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_COMMENT, mCommentId);
         getObjectTask.setCallback(new GetObjectTask.Callback() {
             @Override
             public void onSuccess(Object _result) {
 
                 Log.i(getObjectTask.LOG_TAG, "ON SUCCESS.");
 
-                final User user = (User) _result;
-                mBinding.setUser(user);
-
-                initButtons();
+                final Comment comment = (Comment) _result;
+                mBinding.setComment(comment);
 
                 getObjectTask.releaseCallback();
             }
@@ -110,41 +143,18 @@ public class UserInfoFragment extends BaseFragment {
         getObjectTask.execute();
     }
 
-    private void initButtons() {
-
-        final Bundle bundle = new Bundle();
-        bundle.putInt(Constants.USER_ID_BUNDLE_KEY, mUserId);
-
-        mBinding.setClickerTodos(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mMainActivity.commitFragment(new TodoListFragment(), bundle);
-            }
-        });
-
-        mBinding.setClickerAlbums(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mMainActivity.commitFragment(new AlbumListFragment(), bundle);
-            }
-        });
-
-        mBinding.setClickerPosts(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mMainActivity.commitFragment(new PostListFragment(), bundle);
-            }
-        });
-
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        mMainActivity.commitFragment(new UserListFragment(), null);
+        if (!isPostIdNull && !isUserIdNull) {
+
+            final Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
+            bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+            mMainActivity.commitFragment(new PostInfoFragment(), bundle);
+
+        } else
+            mMainActivity.commitFragment(new UserListFragment(), null);
     }
 }

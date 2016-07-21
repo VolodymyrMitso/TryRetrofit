@@ -8,6 +8,7 @@ import java.util.List;
 import mitso.volodymyr.tryretrofit.api.IConnection;
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.models.Album;
+import mitso.volodymyr.tryretrofit.models.Comment;
 import mitso.volodymyr.tryretrofit.models.Photo;
 import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.Todo;
@@ -94,6 +95,13 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
 
                 final Call<List<Photo>> call = connection.getPhotosByAlbumId(mObjectId);
                 final Response<List<Photo>> response = call.execute();
+
+                mObjectList.addAll(response.body());
+
+            } else if (mObjectType == Constants.OBJECT_TYPE_COMMENT && mObjectId != null) {
+
+                final Call<List<Comment>> call = connection.getCommentsByPostId(mObjectId);
+                final Response<List<Comment>> response = call.execute();
 
                 mObjectList.addAll(response.body());
             }

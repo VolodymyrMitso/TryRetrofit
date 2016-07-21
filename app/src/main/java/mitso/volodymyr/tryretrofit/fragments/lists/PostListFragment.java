@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,9 @@ import mitso.volodymyr.tryretrofit.api.tasks.GetObjectsTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
+import mitso.volodymyr.tryretrofit.fragments.infos.PostInfoFragment;
 import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
+import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
 import mitso.volodymyr.tryretrofit.recyclerview.ICommonHandler;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
@@ -120,6 +121,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
     private void initRecyclerView() {
 
         mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_POST, mPostList);
+
         mBinding.rvModels.setAdapter(mCommonAdapter);
         mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
         mBinding.rvModels.addItemDecoration(new ItemDecoration(
@@ -172,7 +174,11 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
     @Override
     public void itemOnClick(Object _object, int _position) {
 
-        Toast.makeText(mMainActivity, _object.toString(), Toast.LENGTH_SHORT).show();
+        final int postId = ((Post) _object).getId();
+        final Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, postId);
+        bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+        mMainActivity.commitFragment(new PostInfoFragment(), bundle);
     }
 }
 

@@ -11,16 +11,19 @@ import java.util.List;
 
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.databinding.CardAlbumBinding;
+import mitso.volodymyr.tryretrofit.databinding.CardCommentBinding;
 import mitso.volodymyr.tryretrofit.databinding.CardPhotoBinding;
 import mitso.volodymyr.tryretrofit.databinding.CardPostBinding;
 import mitso.volodymyr.tryretrofit.databinding.CardTodoBinding;
 import mitso.volodymyr.tryretrofit.databinding.CardUserBinding;
 import mitso.volodymyr.tryretrofit.models.Album;
+import mitso.volodymyr.tryretrofit.models.Comment;
 import mitso.volodymyr.tryretrofit.models.Photo;
 import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.Todo;
 import mitso.volodymyr.tryretrofit.models.User;
 import mitso.volodymyr.tryretrofit.recyclerview.viewholders.AlbumViewHolder;
+import mitso.volodymyr.tryretrofit.recyclerview.viewholders.CommentViewHolder;
 import mitso.volodymyr.tryretrofit.recyclerview.viewholders.PhotoViewHolder;
 import mitso.volodymyr.tryretrofit.recyclerview.viewholders.PostViewHolder;
 import mitso.volodymyr.tryretrofit.recyclerview.viewholders.TodoViewHolder;
@@ -59,6 +62,9 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         else if (mViewType == Constants.VIEW_TYPE_PHOTO)
             return new PhotoViewHolder(CardPhotoBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
+        else if (mViewType == Constants.VIEW_TYPE_COMMENT)
+            return new CommentViewHolder(CardCommentBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
+
         else return null;
     }
 
@@ -84,12 +90,6 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final TodoViewHolder todoViewHolder = (TodoViewHolder) _holder;
 
             todoViewHolder.getBinding().setTodo(todo);
-            todoViewHolder.getBinding().setClicker(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mCommonHandler.itemOnClick(todo, todoViewHolder.getAdapterPosition());
-                }
-            });
 
         } else if (mViewType == Constants.VIEW_TYPE_ALBUM) {
 
@@ -123,6 +123,19 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final PhotoViewHolder photoViewHolder = (PhotoViewHolder) _holder;
 
             photoViewHolder.getBinding().setPhoto(photo);
+
+        } else if (mViewType == Constants.VIEW_TYPE_COMMENT) {
+
+            final Comment comment = (Comment) mObjectList.get(_position);
+            final CommentViewHolder commentViewHolder = (CommentViewHolder) _holder;
+
+            commentViewHolder.getBinding().setComment(comment);
+            commentViewHolder.getBinding().setClicker(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCommonHandler.itemOnClick(comment, commentViewHolder.getAdapterPosition());
+                }
+            });
         }
     }
 

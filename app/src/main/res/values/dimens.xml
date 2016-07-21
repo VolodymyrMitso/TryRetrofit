@@ -3,9 +3,9 @@
 
     <dimen name="d_card_margin_small">15dp</dimen>
     <dimen name="d_card_margin_big">30dp</dimen>
-
-    <dimen name="d_user_info_padding">10dp</dimen>
-
     <dimen name="d_card_text_size">15sp</dimen>
+
+    <dimen name="object_info_tv_padding">15dp</dimen>
+    <dimen name="object_info_btn_margin">10dp</dimen>
 
 </resources>

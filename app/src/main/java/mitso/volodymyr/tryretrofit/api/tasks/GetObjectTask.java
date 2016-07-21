@@ -6,6 +6,8 @@ import java.util.List;
 
 import mitso.volodymyr.tryretrofit.api.IConnection;
 import mitso.volodymyr.tryretrofit.constants.Constants;
+import mitso.volodymyr.tryretrofit.models.Comment;
+import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.User;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,7 +26,7 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
 
     private Object              mObject;
     private int                 mObjectType;
-    private Integer             mObjectId;
+    private int                 mObjectId;
     private Callback            mCallback;
     private Exception           mException;
 
@@ -56,10 +58,24 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
                     .build();
             final IConnection connection = retrofit.create(IConnection.class);
 
-            if (mObjectType == Constants.OBJECT_TYPE_USER && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_USER) {
 
                 final Call<User> call = connection.getUserById(mObjectId);
                 final Response<User> response = call.execute();
+
+                mObject = response.body();
+
+            } else if (mObjectType == Constants.OBJECT_TYPE_POST) {
+
+                final Call<Post> call = connection.getPostById(mObjectId);
+                final Response<Post> response = call.execute();
+
+                mObject = response.body();
+
+        } else if (mObjectType == Constants.OBJECT_TYPE_COMMENT) {
+
+                final Call<Comment> call = connection.getCommentById(mObjectId);
+                final Response<Comment> response = call.execute();
 
                 mObject = response.body();
             }

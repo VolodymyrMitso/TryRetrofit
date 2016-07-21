@@ -103,11 +103,12 @@ public class Address {
     @Override
     public String toString() {
         return
-                "\n    Address Info:" +
-                "\n    street = " + street +
-                "\n    suite = " + suite +
-                "\n    city = " + city +
-                "\n    zipcode = " + zipcode +
-                "\n    geo = " + geo;
+                "Address{" +
+                "street='" + street + '\'' +
+                ", suite='" + suite + '\'' +
+                ", city='" + city + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", geo=" + geo +
+                '}';
     }
 }

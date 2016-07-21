@@ -96,6 +96,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
     private void initRecyclerView() {
 
         mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_USER, mUserList);
+
         mBinding.rvModels.setAdapter(mCommonAdapter);
         mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
         mBinding.rvModels.addItemDecoration(new ItemDecoration(
@@ -141,9 +142,9 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
     @Override
     public void itemOnClick(Object _object, int _position) {
 
-        final int id = ((User) _object).getId();
+        final int userId = ((User) _object).getId();
         final Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, id);
+        bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, userId);
         mMainActivity.commitFragment(new UserInfoFragment(), bundle);
     }
 }

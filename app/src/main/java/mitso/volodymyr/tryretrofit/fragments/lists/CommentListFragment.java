@@ -17,24 +17,27 @@ import mitso.volodymyr.tryretrofit.api.tasks.GetObjectsTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
-import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
-import mitso.volodymyr.tryretrofit.models.Album;
+import mitso.volodymyr.tryretrofit.fragments.infos.CommentInfoFragment;
+import mitso.volodymyr.tryretrofit.fragments.infos.PostInfoFragment;
+import mitso.volodymyr.tryretrofit.models.Comment;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
 import mitso.volodymyr.tryretrofit.recyclerview.ICommonHandler;
 import mitso.volodymyr.tryretrofit.recyclerview.ItemDecoration;
 import mitso.volodymyr.tryretrofit.support.Support;
 
-public class AlbumListFragment extends BaseFragment implements ICommonHandler {
+public class CommentListFragment extends BaseFragment implements ICommonHandler {
 
-    private final String                    LOG_TAG = Constants.ALBUM_LIST_FRAGMENT_LOG_TAG;
+    private final String                    LOG_TAG = Constants.COMMENT_LIST_FRAGMENT_LOG_TAG;
 
     private Support                         mSupport;
 
     private FragmentCommonListBinding       mBinding;
 
-    private List<Object>                    mAlbumList;
+    private List<Object>                    mCommentList;
     private CommonAdapter                   mCommonAdapter;
 
+    private Integer                         mPostId;
+    private boolean                         isPostIdNull;
     private Integer                         mUserId;
     private boolean                         isUserIdNull;
 
@@ -45,17 +48,18 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
         mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_common_list, _container, false);
         final View rootView = mBinding.getRoot();
 
-        Log.i(LOG_TAG, "ALBUM LIST FRAGMENT IS CREATED.");
+        Log.i(LOG_TAG, "COMMENT LIST FRAGMENT IS CREATED.");
 
         mSupport = new Support();
 
         iniActionBar();
 
+        receivePostId();
         receiveUserId();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isUserIdNull)
-                getAlbumsByUserId();
+            if (!isPostIdNull)
+                getCommentsByPostId();
             else
                 mSupport.showToastError(mMainActivity);
         else
@@ -67,7 +71,23 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     private void iniActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null)
-            mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_albums));
+            mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_comments));
+    }
+
+    private void receivePostId() {
+
+        try {
+            mPostId = getArguments().getInt(Constants.POST_ID_BUNDLE_KEY);
+
+            isPostIdNull = false;
+            Log.i(LOG_TAG, "POST ID IS RECEIVED: " + String.valueOf(mPostId) + ".");
+
+        } catch (NullPointerException _error) {
+
+            isPostIdNull = true;
+            Log.e(LOG_TAG, "POST ID IS NOT RECEIVED. POST ID IS NULL.");
+            _error.printStackTrace();
+        }
     }
 
     private void receiveUserId() {
@@ -86,16 +106,16 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
         }
     }
 
-    public void getAlbumsByUserId() {
+    public void getCommentsByPostId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_ALBUM, mUserId);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_COMMENT, mPostId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {
 
                 Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS.");
 
-                mAlbumList = new ArrayList<>(_result);
+                mCommentList = new ArrayList<>(_result);
 
                 initRecyclerView();
                 setHandler();
@@ -119,7 +139,7 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
 
     private void initRecyclerView() {
 
-        mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_ALBUM, mAlbumList);
+        mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_COMMENT, mCommentList);
 
         mBinding.rvModels.setAdapter(mCommonAdapter);
         mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
@@ -160,11 +180,12 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!isUserIdNull) {
+        if (!isPostIdNull && !isUserIdNull) {
 
             final Bundle bundle = new Bundle();
+            bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
             bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
-            mMainActivity.commitFragment(new UserInfoFragment(), bundle);
+            mMainActivity.commitFragment(new PostInfoFragment(), bundle);
 
         } else
             mMainActivity.commitFragment(new UserListFragment(), null);
@@ -173,10 +194,13 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     @Override
     public void itemOnClick(Object _object, int _position) {
 
-        final int albumId = ((Album) _object).getId();
+        final int commentId = ((Comment) _object).getId();
         final Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.ALBUM_ID_BUNDLE_KEY, albumId);
+        bundle.putSerializable(Constants.COMMENT_ID_BUNDLE_KEY, commentId);
+        bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
         bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
-        mMainActivity.commitFragment(new PhotoListFragment(), bundle);
+        mMainActivity.commitFragment(new CommentInfoFragment(), bundle);
+
     }
 }
+

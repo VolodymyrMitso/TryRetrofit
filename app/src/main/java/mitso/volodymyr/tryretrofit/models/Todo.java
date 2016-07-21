@@ -84,10 +84,11 @@ public class Todo {
     @Override
     public String toString() {
         return
-                "Todo Info" +
-                "\nuserId = " + userId +
-                "\nid = " + id +
-                "\ntitle = " + title +
-                "\ncompleted = " + completed;
+                "Todo{" +
+                "userId=" + userId +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", completed=" + completed +
+                '}';
     }
 }

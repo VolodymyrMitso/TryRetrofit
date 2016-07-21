@@ -160,14 +160,15 @@ public class User {
     @Override
     public String toString() {
         return
-                "User Info:" +
-                "\nid = " + id +
-                "\nname = " + name +
-                "\nusername = " + username +
-                "\nemail = " + email +
-                "\naddress = " + address +
-                "\nphone = " + phone +
-                "\nwebsite = " + website +
-                "\ncompany = " + company;
+                "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", address=" + address +
+                ", phone='" + phone + '\'' +
+                ", website='" + website + '\'' +
+                ", company=" + company +
+                '}';
     }
 }

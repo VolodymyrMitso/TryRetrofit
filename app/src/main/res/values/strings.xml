@@ -8,8 +8,11 @@
     <string name="s_albums">Albums</string>
     <string name="s_posts">Posts</string>
     <string name="s_photos">Photos</string>
+    <string name="s_comments">Comments</string>
 
     <string name="s_user_info">User Info</string>
+    <string name="s_post_info">Post info</string>
+    <string name="s_comment_info">Comment Info</string>
 
     <string name="s_no_network_connection">There is network connection. Please turn on wi-fi or 3g/4g. Please restart the app.</string>
     <string name="s_api_error">Something went wrong. Please restart the app.</string>

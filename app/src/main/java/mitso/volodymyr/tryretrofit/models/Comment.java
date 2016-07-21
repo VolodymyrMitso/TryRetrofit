@@ -2,29 +2,30 @@ package mitso.volodymyr.tryretrofit.models;
 
 // @Generated("org.jsonschema2pojo")
 
-public class Post {
+public class Comment {
 
-    private int userId;
+    private int postId;
     private int id;
-    private String title;
+    private String name;
+    private String email;
     private String body;
 
     /**
      *
      * @return
-     * The userId
+     * The postId
      */
-    public int getUserId() {
-        return userId;
+    public int getPostId() {
+        return postId;
     }
 
     /**
      *
-     * @param userId
-     * The userId
+     * @param postId
+     * The postId
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     /**
@@ -48,19 +49,37 @@ public class Post {
     /**
      *
      * @return
-     * The title
+     * The name
      */
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     /**
      *
-     * @param title
-     * The title
+     * @param name
+     * The name
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @return
+     * The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     *
+     * @param email
+     * The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -84,10 +103,11 @@ public class Post {
     @Override
     public String toString() {
         return
-                "Post{" +
-                "userId=" + userId +
+                "Comment{" +
+                "postId=" + postId +
                 ", id=" + id +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", body='" + body + '\'' +
                 '}';
     }

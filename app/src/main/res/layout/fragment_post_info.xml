@@ -6,19 +6,11 @@
 
     <data>
         <variable
-            name="user"
-            type="mitso.volodymyr.tryretrofit.models.User" />
+            name="post"
+            type="mitso.volodymyr.tryretrofit.models.Post" />
 
         <variable
-            name="clickerTodos"
-            type="android.view.View.OnClickListener" />
-
-        <variable
-            name="clickerAlbums"
-            type="android.view.View.OnClickListener" />
-
-        <variable
-            name="clickerPosts"
+            name="clickerComments"
             type="android.view.View.OnClickListener" />
     </data>
 
@@ -33,10 +25,10 @@
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true"
             android:padding="@dimen/object_info_tv_padding"
-            android:text="@{user.toString()}"
+            android:text="@{post.toString()}"
             android:textColor="@color/c_card_text"
             android:textSize="@dimen/d_card_text_size"
-            tools:text="user toString()" />
+            tools:text="post toString()" />
 
         <RelativeLayout
             android:id="@+id/linearLayout"
@@ -48,28 +40,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/s_todos"
-                app:onClickListener="@{clickerTodos}" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:text="@string/s_albums"
-                app:onClickListener="@{clickerAlbums}" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/s_posts"
-                app:onClickListener="@{clickerPosts}" />
+                android:text="@string/s_comments"
+                app:onClickListener="@{clickerComments}" />
 
         </RelativeLayout>
 

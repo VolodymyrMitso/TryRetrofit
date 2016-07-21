@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="comment"
+            type="mitso.volodymyr.tryretrofit.models.Comment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/object_info_tv_padding"
+            android:text="@{comment.toString()}"
+            android:textColor="@color/c_card_text"
+            android:textSize="@dimen/d_card_text_size"
+            tools:text="comment toString()" />
+
+    </RelativeLayout>
+
+</layout>
