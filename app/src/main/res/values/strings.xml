@@ -17,4 +17,6 @@
     <string name="s_no_network_connection">There is network connection. Please turn on wi-fi or 3g/4g. Please restart the app.</string>
     <string name="s_api_error">Something went wrong. Please restart the app.</string>
 
+    <string name="s_create_user">Create user</string>
+
 </resources>

@@ -3,8 +3,11 @@ package mitso.volodymyr.tryretrofit;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
+import mitso.volodymyr.tryretrofit.fragments.create.CreateUserFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,10 +31,39 @@ public class MainActivity extends AppCompatActivity {
                 .commitAllowingStateLoss();
     }
 
+    public void commit10thFragment(Bundle _bundle) {
+
+        final CreateUserFragment createUserFragment = new CreateUserFragment();
+
+        commitFragment(createUserFragment, _bundle);
+    }
+
     @Override
     public void onBackPressed() {
 
         final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
         baseFragment.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu _menu) {
+
+        getMenuInflater().inflate(R.menu.menu, _menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem _item) {
+
+        switch (_item.getItemId()) {
+            case R.id.mi_create_user:
+
+                final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
+                baseFragment.onOptionsItemSelected();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(_item);
+        }
     }
 }

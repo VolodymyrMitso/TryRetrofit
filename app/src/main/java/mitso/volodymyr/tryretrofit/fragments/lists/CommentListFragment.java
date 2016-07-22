@@ -38,6 +38,7 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
 
     private int                             mUserId;
     private int                             mPostId;
+    private int[]                           mIdArray;
     private boolean                         isIdArrayNull;
 
     @Nullable
@@ -75,12 +76,12 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     private void receiveIdArray() {
 
         try {
-            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
-            if (idArray == null)
+            mIdArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (mIdArray == null)
                 throw new NullPointerException();
 
-            mUserId = idArray[0];
-            mPostId = idArray[1];
+            mUserId = mIdArray[0];
+            mPostId = mIdArray[1];
 
             isIdArrayNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
@@ -165,6 +166,16 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     }
 
     @Override
+    public void itemOnClick(Object _object, int _position) {
+
+        final int commentId = ((Comment) _object).getId();
+        final int[] idArray = new int[] { mUserId, mPostId, commentId };
+        final Bundle bundle = new Bundle();
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
+        mMainActivity.commitFragment(new CommentInfoFragment(), bundle);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
 
@@ -179,13 +190,13 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     }
 
     @Override
-    public void itemOnClick(Object _object, int _position) {
+    public void onOptionsItemSelected() {
+        super.onOptionsItemSelected();
 
-        final int commentId = ((Comment) _object).getId();
-        final int[] idArray = new int[] { mUserId, mPostId, commentId };
         final Bundle bundle = new Bundle();
-        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
-        mMainActivity.commitFragment(new CommentInfoFragment(), bundle);
+        bundle.putInt(Constants.FRAGMENT_TYPE_BUNDLE_KEY, Constants.FRAGMENT_TYPE_COMMENT_LIST);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, mIdArray);
+        mMainActivity.commit10thFragment(bundle);
     }
 }
 

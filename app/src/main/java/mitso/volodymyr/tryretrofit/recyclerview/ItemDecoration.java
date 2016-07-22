@@ -9,10 +9,10 @@ public class ItemDecoration extends RecyclerView.ItemDecoration {
     private int         mMarginSmall;
     private int         mMarginBig;
 
-    public ItemDecoration(int _margin, int _marginTop) {
+    public ItemDecoration(int _marginSmall, int _marginBig) {
 
-        this.mMarginSmall = _margin;
-        this.mMarginBig = _marginTop;
+        this.mMarginSmall = _marginSmall;
+        this.mMarginBig = _marginBig;
     }
 
     @Override

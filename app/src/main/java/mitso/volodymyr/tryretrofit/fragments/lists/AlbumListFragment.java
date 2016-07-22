@@ -36,6 +36,7 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     private CommonAdapter                   mCommonAdapter;
 
     private int                             mUserId;
+    private int[]                           mIdArray;
     private boolean                         isIdArrayNull;
 
     @Nullable
@@ -73,11 +74,11 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     private void receiveIdArray() {
 
         try {
-            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
-            if (idArray == null)
+            mIdArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (mIdArray == null)
                 throw new NullPointerException();
 
-            mUserId = idArray[0];
+            mUserId = mIdArray[0];
 
             isIdArrayNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
@@ -161,6 +162,16 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
+    public void itemOnClick(Object _object, int _position) {
+
+        final int albumId = ((Album) _object).getId();
+        final int[] idArray = new int[] { mUserId, albumId };
+        final Bundle bundle = new Bundle();
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
+        mMainActivity.commitFragment(new PhotoListFragment(), bundle);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
 
@@ -175,12 +186,12 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
-    public void itemOnClick(Object _object, int _position) {
+    public void onOptionsItemSelected() {
+        super.onOptionsItemSelected();
 
-        final int albumId = ((Album) _object).getId();
-        final int[] idArray = new int[] { mUserId, albumId };
         final Bundle bundle = new Bundle();
-        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
-        mMainActivity.commitFragment(new PhotoListFragment(), bundle);
+        bundle.putInt(Constants.FRAGMENT_TYPE_BUNDLE_KEY, Constants.FRAGMENT_TYPE_ALBUM_LIST);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, mIdArray);
+        mMainActivity.commit10thFragment(bundle);
     }
 }

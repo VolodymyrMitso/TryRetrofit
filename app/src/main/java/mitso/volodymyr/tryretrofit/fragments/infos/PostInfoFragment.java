@@ -29,6 +29,7 @@ public class PostInfoFragment extends BaseFragment {
 
     private int                             mUserId;
     private int                             mPostId;
+    private int[]                           mIdArray;
     private boolean                         isIdArrayNull;
 
     @Nullable
@@ -66,12 +67,12 @@ public class PostInfoFragment extends BaseFragment {
     private void receiveIdArray() {
 
         try {
-            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
-            if (idArray == null)
+            mIdArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (mIdArray == null)
                 throw new NullPointerException();
 
-            mUserId = idArray[0];
-            mPostId = idArray[1];
+            mUserId = mIdArray[0];
+            mPostId = mIdArray[1];
 
             isIdArrayNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
@@ -142,5 +143,15 @@ public class PostInfoFragment extends BaseFragment {
 
         } else
             mMainActivity.commitFragment(new UserListFragment(), null);
+    }
+
+    @Override
+    public void onOptionsItemSelected() {
+        super.onOptionsItemSelected();
+
+        final Bundle bundle = new Bundle();
+        bundle.putInt(Constants.FRAGMENT_TYPE_BUNDLE_KEY, Constants.FRAGMENT_TYPE_POST_INFO);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, mIdArray);
+        mMainActivity.commit10thFragment(bundle);
     }
 }
