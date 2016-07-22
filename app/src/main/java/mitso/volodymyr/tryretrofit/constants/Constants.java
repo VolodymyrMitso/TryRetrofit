@@ -53,4 +53,8 @@ public class Constants {
     public static final String ALBUM_ID_BUNDLE_KEY      = "ALBUM_ID_BUNDLE_KEY";
     public static final String POST_ID_BUNDLE_KEY       = "POST_ID_BUNDLE_KEY";
     public static final String COMMENT_ID_BUNDLE_KEY    = "COMMENT_ID_BUNDLE_KEY";
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static final String ID_ARRAY_BUNDLE_KEY      = "ID_ARRAY_BUNDLE_KEY";
 }

@@ -31,10 +31,9 @@ public class PhotoListFragment extends BaseFragment {
 
     private List<Object>                    mPhotoList;
 
-    private Integer                         mAlbumId;
-    private boolean                         isAlbumIdNull;
-    private Integer                         mUserId;
-    private boolean                         isUserIdNull;
+    private int                             mUserId;
+    private int                             mAlbumId;
+    private boolean                         isIdArrayNull;
 
     @Nullable
     @Override
@@ -49,11 +48,10 @@ public class PhotoListFragment extends BaseFragment {
 
         iniActionBar();
 
-        receiveAlbumId();
-        receiveUserId();
+        receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isAlbumIdNull)
+            if (!isIdArrayNull)
                 getPhotosByAlbumId();
             else
                 mSupport.showToastError(mMainActivity);
@@ -69,34 +67,24 @@ public class PhotoListFragment extends BaseFragment {
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_photos));
     }
 
-    private void receiveAlbumId() {
+    private void receiveIdArray() {
 
         try {
-            mAlbumId = getArguments().getInt(Constants.ALBUM_ID_BUNDLE_KEY);
+            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (idArray == null)
+                throw new NullPointerException();
 
-            isAlbumIdNull = false;
+            mUserId = idArray[0];
+            mAlbumId = idArray[1];
+
+            isIdArrayNull = false;
+            Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
             Log.i(LOG_TAG, "ALBUM ID IS RECEIVED: " + String.valueOf(mAlbumId) + ".");
 
         } catch (NullPointerException _error) {
 
-            isAlbumIdNull = true;
-            Log.e(LOG_TAG, "ALBUM ID IS NOT RECEIVED. ALBUM ID IS NULL.");
-            _error.printStackTrace();
-        }
-    }
-
-    private void receiveUserId() {
-
-        try {
-            mUserId = getArguments().getInt(Constants.USER_ID_BUNDLE_KEY);
-
-            isUserIdNull = false;
-            Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
-
-        } catch (NullPointerException _error) {
-
-            isUserIdNull = true;
-            Log.e(LOG_TAG, "USER ID IS NOT RECEIVED. USER ID IS NULL.");
+            isIdArrayNull = true;
+            Log.e(LOG_TAG, "ID ARRAY IS NOT RECEIVED. ID ARRAY IS NULL.");
             _error.printStackTrace();
         }
     }
@@ -108,7 +96,7 @@ public class PhotoListFragment extends BaseFragment {
             @Override
             public void onSuccess(List<Object> _result) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS.");
+                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS: PHOTO LIST.");
 
                 mPhotoList = new ArrayList<>(_result);
 
@@ -120,7 +108,7 @@ public class PhotoListFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
@@ -146,10 +134,10 @@ public class PhotoListFragment extends BaseFragment {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!isUserIdNull) {
+        if (!isIdArrayNull) {
 
             final Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+            bundle.putSerializable(Constants.ID_ARRAY_BUNDLE_KEY, new int[] { mUserId });
             mMainActivity.commitFragment(new AlbumListFragment(), bundle);
 
         } else

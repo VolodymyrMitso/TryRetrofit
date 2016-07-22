@@ -27,10 +27,9 @@ public class PostInfoFragment extends BaseFragment {
 
     private FragmentPostInfoBinding         mBinding;
 
-    private Integer                         mPostId;
-    private boolean                         isPostIdNull;
-    private Integer                         mUserId;
-    private boolean                         isUserIdNull;
+    private int                             mUserId;
+    private int                             mPostId;
+    private boolean                         isIdArrayNull;
 
     @Nullable
     @Override
@@ -45,11 +44,10 @@ public class PostInfoFragment extends BaseFragment {
 
         iniActionBar();
 
-        receivePostId();
-        receiveUserId();
+        receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isPostIdNull)
+            if (!isIdArrayNull)
                 getPostById();
             else
                 mSupport.showToastError(mMainActivity);
@@ -65,34 +63,24 @@ public class PostInfoFragment extends BaseFragment {
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_post_info));
     }
 
-    private void receivePostId() {
+    private void receiveIdArray() {
 
         try {
-            mPostId = getArguments().getInt(Constants.POST_ID_BUNDLE_KEY);
+            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (idArray == null)
+                throw new NullPointerException();
 
-            isPostIdNull = false;
-            Log.i(LOG_TAG, "POST ID IS RECEIVED: " + String.valueOf(mPostId) + ".");
+            mUserId = idArray[0];
+            mPostId = idArray[1];
 
-        } catch (NullPointerException _error) {
-
-            isPostIdNull = true;
-            Log.e(LOG_TAG, "POST ID IS NOT RECEIVED. POST ID IS NULL.");
-            _error.printStackTrace();
-        }
-    }
-
-    private void receiveUserId() {
-
-        try {
-            mUserId = getArguments().getInt(Constants.USER_ID_BUNDLE_KEY);
-
-            isUserIdNull = false;
+            isIdArrayNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
+            Log.i(LOG_TAG, "ALBUM ID IS RECEIVED: " + String.valueOf(mPostId) + ".");
 
         } catch (NullPointerException _error) {
 
-            isUserIdNull = true;
-            Log.e(LOG_TAG, "USER ID IS NOT RECEIVED. USER ID IS NULL.");
+            isIdArrayNull = true;
+            Log.e(LOG_TAG, "ID ARRAY IS NOT RECEIVED. ID ARRAY IS NULL.");
             _error.printStackTrace();
         }
     }
@@ -104,7 +92,7 @@ public class PostInfoFragment extends BaseFragment {
             @Override
             public void onSuccess(Object _result) {
 
-                Log.i(getObjectTask.LOG_TAG, "ON SUCCESS.");
+                Log.i(getObjectTask.LOG_TAG, "ON SUCCESS: POST.");
 
                 final Post post = (Post) _result;
                 mBinding.setPost(post);
@@ -117,7 +105,7 @@ public class PostInfoFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectTask.LOG_TAG, "ON FAILURE.");
+                Log.i(getObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
@@ -134,9 +122,9 @@ public class PostInfoFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 
+                final int[] idArray = new int[] { mUserId, mPostId };
                 final Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
-                bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+                bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
                 mMainActivity.commitFragment(new CommentListFragment(), bundle);
             }
         });
@@ -146,10 +134,10 @@ public class PostInfoFragment extends BaseFragment {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!isUserIdNull) {
+        if (!isIdArrayNull) {
 
             final Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+            bundle.putSerializable(Constants.ID_ARRAY_BUNDLE_KEY, new int[] { mUserId });
             mMainActivity.commitFragment(new PostListFragment(), bundle);
 
         } else

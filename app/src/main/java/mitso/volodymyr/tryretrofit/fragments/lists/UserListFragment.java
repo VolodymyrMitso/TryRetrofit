@@ -69,7 +69,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
             @Override
             public void onSuccess(List<Object> _result) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS.");
+                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS: USER LIST.");
 
                 mUserList = new ArrayList<>(_result);
 
@@ -82,7 +82,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
@@ -143,8 +143,9 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
     public void itemOnClick(Object _object, int _position) {
 
         final int userId = ((User) _object).getId();
+        final int[] idArray = new int[] { userId } ;
         final Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, userId);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
         mMainActivity.commitFragment(new UserInfoFragment(), bundle);
     }
 }

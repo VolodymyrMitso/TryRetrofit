@@ -36,10 +36,9 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     private List<Object>                    mCommentList;
     private CommonAdapter                   mCommonAdapter;
 
-    private Integer                         mPostId;
-    private boolean                         isPostIdNull;
-    private Integer                         mUserId;
-    private boolean                         isUserIdNull;
+    private int                             mUserId;
+    private int                             mPostId;
+    private boolean                         isIdArrayNull;
 
     @Nullable
     @Override
@@ -54,11 +53,10 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
 
         iniActionBar();
 
-        receivePostId();
-        receiveUserId();
+        receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isPostIdNull)
+            if (!isIdArrayNull)
                 getCommentsByPostId();
             else
                 mSupport.showToastError(mMainActivity);
@@ -74,34 +72,24 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_comments));
     }
 
-    private void receivePostId() {
+    private void receiveIdArray() {
 
         try {
-            mPostId = getArguments().getInt(Constants.POST_ID_BUNDLE_KEY);
+            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (idArray == null)
+                throw new NullPointerException();
 
-            isPostIdNull = false;
+            mUserId = idArray[0];
+            mPostId = idArray[1];
+
+            isIdArrayNull = false;
+            Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
             Log.i(LOG_TAG, "POST ID IS RECEIVED: " + String.valueOf(mPostId) + ".");
 
         } catch (NullPointerException _error) {
 
-            isPostIdNull = true;
-            Log.e(LOG_TAG, "POST ID IS NOT RECEIVED. POST ID IS NULL.");
-            _error.printStackTrace();
-        }
-    }
-
-    private void receiveUserId() {
-
-        try {
-            mUserId = getArguments().getInt(Constants.USER_ID_BUNDLE_KEY);
-
-            isUserIdNull = false;
-            Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
-
-        } catch (NullPointerException _error) {
-
-            isUserIdNull = true;
-            Log.e(LOG_TAG, "USER ID IS NOT RECEIVED. USER ID IS NULL.");
+            isIdArrayNull = true;
+            Log.e(LOG_TAG, "ID ARRAY IS NOT RECEIVED. ID ARRAY IS NULL.");
             _error.printStackTrace();
         }
     }
@@ -113,7 +101,7 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
             @Override
             public void onSuccess(List<Object> _result) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS.");
+                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS: COMMENT LIST.");
 
                 mCommentList = new ArrayList<>(_result);
 
@@ -126,7 +114,7 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE.");
+                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
@@ -180,11 +168,10 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!isPostIdNull && !isUserIdNull) {
+        if (!isIdArrayNull) {
 
             final Bundle bundle = new Bundle();
-            bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
-            bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+            bundle.putSerializable(Constants.ID_ARRAY_BUNDLE_KEY, new int[] { mUserId, mPostId });
             mMainActivity.commitFragment(new PostInfoFragment(), bundle);
 
         } else
@@ -195,12 +182,10 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
     public void itemOnClick(Object _object, int _position) {
 
         final int commentId = ((Comment) _object).getId();
+        final int[] idArray = new int[] { mUserId, mPostId, commentId };
         final Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.COMMENT_ID_BUNDLE_KEY, commentId);
-        bundle.putSerializable(Constants.POST_ID_BUNDLE_KEY, mPostId);
-        bundle.putSerializable(Constants.USER_ID_BUNDLE_KEY, mUserId);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
         mMainActivity.commitFragment(new CommentInfoFragment(), bundle);
-
     }
 }
 

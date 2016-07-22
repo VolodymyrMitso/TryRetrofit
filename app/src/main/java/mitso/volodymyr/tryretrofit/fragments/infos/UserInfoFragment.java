@@ -28,8 +28,8 @@ public class UserInfoFragment extends BaseFragment {
 
     private FragmentUserInfoBinding         mBinding;
 
-    private Integer                         mUserId;
-    private boolean                         isUserIdNull;
+    private int                             mUserId;
+    private boolean                         isIdArrayNull;
 
     @Nullable
     @Override
@@ -44,10 +44,10 @@ public class UserInfoFragment extends BaseFragment {
 
         iniActionBar();
 
-        receiveUserId();
+        receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
-            if (!isUserIdNull)
+            if (!isIdArrayNull)
                 getUserById();
             else
                 mSupport.showToastError(mMainActivity);
@@ -63,18 +63,22 @@ public class UserInfoFragment extends BaseFragment {
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_user_info));
     }
 
-    private void receiveUserId() {
+    private void receiveIdArray() {
 
         try {
-            mUserId = getArguments().getInt(Constants.USER_ID_BUNDLE_KEY);
+            final int[] idArray = getArguments().getIntArray(Constants.ID_ARRAY_BUNDLE_KEY);
+            if (idArray == null)
+                throw new NullPointerException();
 
-            isUserIdNull = false;
+            mUserId = idArray[0];
+
+            isIdArrayNull = false;
             Log.i(LOG_TAG, "USER ID IS RECEIVED: " + String.valueOf(mUserId) + ".");
 
         } catch (NullPointerException _error) {
 
-            isUserIdNull = true;
-            Log.e(LOG_TAG, "USER ID IS NOT RECEIVED. USER ID IS NULL.");
+            isIdArrayNull = true;
+            Log.e(LOG_TAG, "ID ARRAY IS NOT RECEIVED. ID ARRAY IS NULL.");
             _error.printStackTrace();
         }
     }
@@ -86,7 +90,7 @@ public class UserInfoFragment extends BaseFragment {
             @Override
             public void onSuccess(Object _result) {
 
-                Log.i(getObjectTask.LOG_TAG, "ON SUCCESS.");
+                Log.i(getObjectTask.LOG_TAG, "ON SUCCESS: USER.");
 
                 final User user = (User) _result;
                 mBinding.setUser(user);
@@ -99,7 +103,7 @@ public class UserInfoFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectTask.LOG_TAG, "ON FAILURE.");
+                Log.i(getObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
@@ -113,7 +117,7 @@ public class UserInfoFragment extends BaseFragment {
     private void initButtons() {
 
         final Bundle bundle = new Bundle();
-        bundle.putInt(Constants.USER_ID_BUNDLE_KEY, mUserId);
+        bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, new int[] { mUserId });
 
         mBinding.setClickerTodos(new View.OnClickListener() {
             @Override
