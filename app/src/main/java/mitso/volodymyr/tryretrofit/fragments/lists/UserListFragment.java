@@ -133,13 +133,6 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        mMainActivity.finish();
-    }
-
-    @Override
     public void itemOnClick(Object _object, int _position) {
 
         final int userId = ((User) _object).getId();
@@ -147,5 +140,21 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
         final Bundle bundle = new Bundle();
         bundle.putIntArray(Constants.ID_ARRAY_BUNDLE_KEY, idArray);
         mMainActivity.commitFragment(new UserInfoFragment(), bundle);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        mMainActivity.finish();
+    }
+
+    @Override
+    public void onOptionsItemSelected() {
+        super.onOptionsItemSelected();
+
+        final Bundle bundle = new Bundle();
+        bundle.putInt(Constants.FRAGMENT_TYPE_BUNDLE_KEY, Constants.FRAGMENT_TYPE_USER_LIST);
+        mMainActivity.commit10thFragment(bundle);
     }
 }
