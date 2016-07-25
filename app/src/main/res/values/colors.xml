@@ -5,7 +5,9 @@
     <color name="c_action_bar">#3F51B5</color>
     <color name="c_accent">#000000</color>
 
-    <color name="c_card_text">#000000</color>
+    <color name="c_text">#000000</color>
+
     <color name="c_card_line">#3F51B5</color>
+    <color name="c_create_object_et">#E3F2FD</color>
 
 </resources>

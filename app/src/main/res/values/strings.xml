@@ -18,5 +18,13 @@
     <string name="s_api_error">Something went wrong. Please restart the app.</string>
 
     <string name="s_create_user">Create user</string>
+    <string name="s_create_todo">Create todo</string>
+    <string name="s_create_album">Create album</string>
+    <string name="s_create_post">Create post</string>
+    <string name="s_create_photo">Create photo</string>
+    <string name="s_create_comment">Create comment</string>
+
+    <string name="id">"ID: "</string>
+    <string name="s_post">Post</string>
 
 </resources>

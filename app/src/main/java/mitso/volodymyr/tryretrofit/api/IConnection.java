@@ -9,7 +9,9 @@ import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.Todo;
 import mitso.volodymyr.tryretrofit.models.User;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -47,4 +49,24 @@ public interface IConnection {
 
     @GET("/comments") // comments?postId=1
     Call<List<Comment>> getCommentsByPostId(@Query("postId") int postId);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @POST("/users")
+    Call<User> postUser(@Body User user);
+
+    @POST("/todos")
+    Call<Todo> postTodo(@Body Todo todo);
+
+    @POST("/albums")
+    Call<Album> postAlbum(@Body Album album);
+
+    @POST("/posts")
+    Call<Post> postPost(@Body Post post);
+
+    @POST("/photos")
+    Call<Photo> postPhoto(@Body Photo photo);
+
+    @POST("/comments")
+    Call<Comment> postComment(@Body Comment comment);
 }

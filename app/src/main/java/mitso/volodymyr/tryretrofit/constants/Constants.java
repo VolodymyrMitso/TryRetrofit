@@ -26,6 +26,7 @@ public class Constants {
 
     public static final String GET_OBJECTS_TASK_LOG_TAG     = "_____GET_OBJECTS_TASK_LOG_TAG";
     public static final String GET_OBJECT_TASK_LOG_TAG      = "_____GET_OBJECT_TASK_LOG_TAG";
+    public static final String POST_OBJECT_TASK_LOG_TAG     = "_____POST_OBJECT_TASK_LOG_TAG";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +45,7 @@ public class Constants {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static final String CREATE_USER_FRAGMENT_LOG_TAG     = "_____CREATE_USER_FRAGMENT_LOG_TAG";
+    public static final String CREATE_OBJECT_FRAGMENT_LOG_TAG = "_____CREATE_OBJECT_FRAGMENT_LOG_TAG";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

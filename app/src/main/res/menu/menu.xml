@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/mi_create_user"
+        android:id="@+id/mi_create_object"
         android:icon="@drawable/ic_add"
         android:title="@string/s_create_user"
         app:showAsAction="always"/>

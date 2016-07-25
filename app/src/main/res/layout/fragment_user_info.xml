@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true"
-            android:padding="@dimen/object_info_tv_padding"
+            android:layout_margin="@dimen/d_object_info_tv_margin"
             android:text="@{user.toString()}"
-            android:textColor="@color/c_card_text"
-            android:textSize="@dimen/d_card_text_size"
+            android:textColor="@color/c_text"
+            android:textSize="@dimen/d_object_info_text_size"
             tools:text="user toString()" />
 
         <RelativeLayout
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/object_info_btn_margin">
+            android:padding="@dimen/d_object_info_btn_margin">
 
             <Button
                 android:layout_width="wrap_content"

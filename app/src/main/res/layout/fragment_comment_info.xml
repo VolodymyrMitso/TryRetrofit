@@ -18,10 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:padding="@dimen/object_info_tv_padding"
+            android:layout_margin="@dimen/d_object_info_tv_margin"
             android:text="@{comment.toString()}"
-            android:textColor="@color/c_card_text"
-            android:textSize="@dimen/d_card_text_size"
+            android:textColor="@color/c_text"
+            android:textSize="@dimen/d_object_info_text_size"
             tools:text="comment toString()" />
 
     </RelativeLayout>

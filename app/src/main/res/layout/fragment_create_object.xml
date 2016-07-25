@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="object"
+            type="Object" />
+
+        <variable
+            name="clickerPost"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/d_create_object_tv_et_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/id"
+                android:textColor="@color/c_text"
+                android:textSize="@dimen/d_create_object_id_text_size"
+                tools:text="ID: " />
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/c_create_object_et"
+                android:maxLength="5"
+                android:textColor="@color/c_text"
+                android:textSize="@dimen/d_create_object_id_text_size"
+                tools:text="1" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_margin="@dimen/d_create_object_tv_et_margin"
+            android:text="@{object.toString()}"
+            android:textColor="@color/c_text"
+            android:textSize="@dimen/d_create_object_info_text_size"
+            tools:text="object toString()" />
+
+        <RelativeLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/d_create_object_btn_margin">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/s_post"
+                app:onClickListener="@{clickerPost}" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

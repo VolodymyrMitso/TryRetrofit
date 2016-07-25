@@ -109,7 +109,7 @@ public class PhotoListFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
+                Log.e(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);

@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
-import mitso.volodymyr.tryretrofit.fragments.create.CreateUserFragment;
+import mitso.volodymyr.tryretrofit.fragments.create.CreateObjectFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void commit10thFragment(Bundle _bundle) {
 
-        final CreateUserFragment createUserFragment = new CreateUserFragment();
+        final CreateObjectFragment createObjectFragment = new CreateObjectFragment();
 
-        commitFragment(createUserFragment, _bundle);
+        commitFragment(createObjectFragment, _bundle);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem _item) {
 
         switch (_item.getItemId()) {
-            case R.id.mi_create_user:
+            case R.id.mi_create_object:
 
                 final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
                 baseFragment.onOptionsItemSelected();

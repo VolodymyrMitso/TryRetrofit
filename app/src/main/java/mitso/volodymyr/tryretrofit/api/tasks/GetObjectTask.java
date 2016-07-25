@@ -24,9 +24,9 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
         void onFailure(Throwable _error);
     }
 
-    private Object              mObject;
     private int                 mObjectType;
     private int                 mObjectId;
+    private Object              mObject;
     private Callback            mCallback;
     private Exception           mException;
 

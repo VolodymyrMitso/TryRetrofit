@@ -104,7 +104,7 @@ public class UserInfoFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.i(getObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
+                Log.e(getObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);

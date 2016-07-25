@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{photo.title}"
-            android:textColor="@color/c_card_text"
+            android:textColor="@color/c_text"
             android:textSize="@dimen/d_card_text_size"
             tools:text="photo title" />
 
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{photo.url}"
-            android:textColor="@color/c_card_text"
+            android:textColor="@color/c_text"
             android:textSize="@dimen/d_card_text_size"
             tools:text="photo url" />
 
