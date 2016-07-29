@@ -57,7 +57,7 @@ public class TodoListFragment extends BaseFragment {
             else
                 mSupport.showToastError(mMainActivity);
         else
-            mSupport.showToastNoConnection(mMainActivity);
+            mSupport.showToastNoNetworkConnection(mMainActivity);
 
         return rootView;
     }

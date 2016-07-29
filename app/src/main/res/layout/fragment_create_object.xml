@@ -38,10 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/c_create_object_et"
-                android:maxLength="5"
+                android:maxLength="4"
                 android:textColor="@color/c_text"
                 android:textSize="@dimen/d_create_object_id_text_size"
-                tools:text="1" />
+                tools:text="1234" />
 
         </LinearLayout>
 

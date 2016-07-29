@@ -1,6 +1,7 @@
 package mitso.volodymyr.tryretrofit.fragments.create;
 
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -51,6 +52,8 @@ public class CreateObjectFragment extends BaseFragment {
     private boolean                         isIdNull;
 
     private Object                          mObject;
+
+    private PostObjectTask                  mPostObjectTask;
 
     @Nullable
     @Override
@@ -115,19 +118,19 @@ public class CreateObjectFragment extends BaseFragment {
             if (mFragmentType == Constants.FRAGMENT_TYPE_USER_LIST || mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_user));
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_todo));
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_album));
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_post));
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_photo));
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_comment));
         }
     }
@@ -146,21 +149,59 @@ public class CreateObjectFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 
-                getIdFromEditText();
-
                 if (!isFragmentTypeNull) {
-                    createObject();
 
                     if (mSupport.checkNetworkConnection(mMainActivity))
                         postObject();
                     else
-                        mSupport.showToastNoConnection(mMainActivity);
+                        mSupport.showToastNoNetworkConnection(mMainActivity);
 
                 } else
                     mSupport.showToastError(mMainActivity);
-
             }
         });
+    }
+
+    public void postObject() {
+
+        if (mPostObjectTask == null || mPostObjectTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
+
+            getIdFromEditText();
+            createObject();
+
+            mPostObjectTask = new PostObjectTask(mFragmentType, mObject);
+
+            mPostObjectTask.setCallback(new PostObjectTask.Callback() {
+                @Override
+                public void onSuccess(Object _result) {
+
+                    Log.i(mPostObjectTask.LOG_TAG, "ON SUCCESS.");
+                    Log.i(mPostObjectTask.LOG_TAG, _result.toString());
+
+                    mBinding.setObject(_result);
+
+                    mPostObjectTask.releaseCallback();
+                }
+
+                @Override
+                public void onFailure(Throwable _error) {
+
+                    Log.e(mPostObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
+                    _error.printStackTrace();
+
+                    mSupport.showToastError(mMainActivity);
+
+                    mPostObjectTask.releaseCallback();
+                }
+            });
+
+            mPostObjectTask.execute();
+
+        } else {
+
+            Log.i(mPostObjectTask.LOG_TAG, "IS RUNNING ALREADY.");
+            mSupport.showToastTaskRunning(mMainActivity);
+        }
     }
 
     private void getIdFromEditText() {
@@ -190,16 +231,16 @@ public class CreateObjectFragment extends BaseFragment {
             else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
                 mObject = new Todo();
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
                 mObject = new Album();
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
                 mObject = new Post();
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
                 mObject = new Photo();
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
                 mObject = new Comment();
 
         } else {
@@ -243,35 +284,6 @@ public class CreateObjectFragment extends BaseFragment {
         }
     }
 
-    public void postObject() {
-
-        final PostObjectTask postObjectTask = new PostObjectTask(mFragmentType, mObject);
-        postObjectTask.setCallback(new PostObjectTask.Callback() {
-            @Override
-            public void onSuccess(Object _result) {
-
-                Log.i(postObjectTask.LOG_TAG, "ON SUCCESS.");
-                Log.i(postObjectTask.LOG_TAG, _result.toString());
-
-                mBinding.setObject(_result);
-
-                postObjectTask.releaseCallback();
-            }
-
-            @Override
-            public void onFailure(Throwable _error) {
-
-                Log.e(postObjectTask.LOG_TAG, "ON FAILURE: ERROR.");
-                _error.printStackTrace();
-
-                mSupport.showToastError(mMainActivity);
-
-                postObjectTask.releaseCallback();
-            }
-        });
-        postObjectTask.execute();
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -289,28 +301,25 @@ public class CreateObjectFragment extends BaseFragment {
             if (mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO)
                 mMainActivity.commitFragment(new UserInfoFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
                 mMainActivity.commitFragment(new TodoListFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
-                mMainActivity.commitFragment(new TodoListFragment(), bundle);
-
-            if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
                 mMainActivity.commitFragment(new AlbumListFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST)
                 mMainActivity.commitFragment(new PostListFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
                 mMainActivity.commitFragment(new PhotoListFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
                 mMainActivity.commitFragment(new PostInfoFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST)
                 mMainActivity.commitFragment(new CommentListFragment(), bundle);
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
+            else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
                 mMainActivity.commitFragment(new CommentInfoFragment(), bundle);
         }
     }

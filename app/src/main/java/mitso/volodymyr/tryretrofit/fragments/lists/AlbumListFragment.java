@@ -60,7 +60,7 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
             else
                 mSupport.showToastError(mMainActivity);
         else
-            mSupport.showToastNoConnection(mMainActivity);
+            mSupport.showToastNoNetworkConnection(mMainActivity);
 
         return rootView;
     }

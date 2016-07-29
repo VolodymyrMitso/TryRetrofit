@@ -18,13 +18,18 @@ public class Support {
         return ((networkInfoWifi != null && networkInfoWifi.isConnected()) || (networkInfoMobile != null && networkInfoMobile.isConnected()));
     }
 
-    public void showToastNoConnection(Context _context) {
+    public void showToastNoNetworkConnection(Context _context) {
 
         Toast.makeText(_context, R.string.s_no_network_connection, Toast.LENGTH_LONG).show();
     }
 
     public void showToastError(Context _context) {
 
-        Toast.makeText(_context, R.string.s_api_error, Toast.LENGTH_LONG).show();
+        Toast.makeText(_context, R.string.s_error, Toast.LENGTH_LONG).show();
+    }
+
+    public void showToastTaskRunning(Context _context) {
+
+        Toast.makeText(_context, R.string.s_task_running, Toast.LENGTH_LONG).show();
     }
 }

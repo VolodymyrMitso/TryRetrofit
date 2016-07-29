@@ -51,7 +51,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
         if (mSupport.checkNetworkConnection(mMainActivity))
             getAllUsers();
         else
-            mSupport.showToastNoConnection(mMainActivity);
+            mSupport.showToastNoNetworkConnection(mMainActivity);
 
         return rootView;
     }
