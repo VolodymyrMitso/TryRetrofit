@@ -97,7 +97,7 @@ public class CommentListFragment extends BaseFragment implements ICommonHandler 
 
     public void getCommentsByPostId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_COMMENT, mPostId);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_COMMENT, mPostId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {

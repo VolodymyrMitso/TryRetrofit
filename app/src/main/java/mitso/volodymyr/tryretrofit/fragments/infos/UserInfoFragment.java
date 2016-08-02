@@ -86,7 +86,7 @@ public class UserInfoFragment extends BaseFragment {
 
     public void getUserById() {
 
-        final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_USER, mUserId);
+        final GetObjectTask getObjectTask = new GetObjectTask(mMainActivity, Constants.OBJECT_TYPE_USER, mUserId);
         getObjectTask.setCallback(new GetObjectTask.Callback() {
             @Override
             public void onSuccess(Object _result) {

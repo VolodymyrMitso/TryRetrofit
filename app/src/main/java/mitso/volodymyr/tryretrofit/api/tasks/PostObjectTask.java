@@ -1,5 +1,7 @@
 package mitso.volodymyr.tryretrofit.api.tasks;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import mitso.volodymyr.tryretrofit.models.Photo;
 import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.Todo;
 import mitso.volodymyr.tryretrofit.models.User;
+import mitso.volodymyr.tryretrofit.support.Support;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -32,11 +35,15 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
     private Object              mObjectResponse;
     private Callback            mCallback;
     private Exception           mException;
+    private Support             mSupport;
+    private ProgressDialog      mProgressDialog;
 
-    public PostObjectTask(int _fragmentType, Object _objectPost) {
+    public PostObjectTask(Context _context, int _fragmentType, Object _objectPost) {
 
         this.mFragmentType = _fragmentType;
         this.mObjectPost = _objectPost;
+        this.mSupport = new Support();
+        this.mProgressDialog = new ProgressDialog(_context);
     }
 
     public void setCallback(Callback _callback) {
@@ -49,6 +56,13 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
 
         if (mCallback != null)
             mCallback = null;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        mSupport.initProgressDialog(mProgressDialog);
     }
 
     @Override
@@ -128,6 +142,8 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
     @Override
     protected void onPostExecute(Object _object) {
         super.onPostExecute(_object);
+
+        mSupport.dismissProgressDialog(mProgressDialog);
 
         if (mCallback != null) {
             if (mException == null)

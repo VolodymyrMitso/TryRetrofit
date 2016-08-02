@@ -90,7 +90,7 @@ public class CommentInfoFragment extends BaseFragment {
 
     public void getCommentById() {
 
-        final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_COMMENT, mCommentId);
+        final GetObjectTask getObjectTask = new GetObjectTask(mMainActivity, Constants.OBJECT_TYPE_COMMENT, mCommentId);
         getObjectTask.setCallback(new GetObjectTask.Callback() {
             @Override
             public void onSuccess(Object _result) {

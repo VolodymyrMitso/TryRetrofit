@@ -88,7 +88,7 @@ public class PostInfoFragment extends BaseFragment {
 
     public void getPostById() {
 
-        final GetObjectTask getObjectTask = new GetObjectTask(Constants.OBJECT_TYPE_POST, mPostId);
+        final GetObjectTask getObjectTask = new GetObjectTask(mMainActivity, Constants.OBJECT_TYPE_POST, mPostId);
         getObjectTask.setCallback(new GetObjectTask.Callback() {
             @Override
             public void onSuccess(Object _result) {

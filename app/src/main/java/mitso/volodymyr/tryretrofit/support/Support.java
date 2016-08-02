@@ -1,8 +1,10 @@
 package mitso.volodymyr.tryretrofit.support;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.widget.Toast;
 
 import mitso.volodymyr.tryretrofit.R;
@@ -31,5 +33,24 @@ public class Support {
     public void showToastTaskRunning(Context _context) {
 
         Toast.makeText(_context, R.string.s_task_running, Toast.LENGTH_LONG).show();
+    }
+
+    public void initProgressDialog(ProgressDialog _progressDialog) {
+
+        _progressDialog.show();
+        _progressDialog.setContentView(R.layout.dialog_progress);
+    }
+
+    public void dismissProgressDialog(final ProgressDialog _progressDialog) {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if (_progressDialog.isShowing())
+                    _progressDialog.dismiss();
+            }
+        }, 250);
     }
 }
