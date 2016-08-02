@@ -1,11 +1,13 @@
 package mitso.volodymyr.tryretrofit.api.tasks;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import mitso.volodymyr.tryretrofit.api.IConnection;
+import mitso.volodymyr.tryretrofit.api.IApi;
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.models.Album;
 import mitso.volodymyr.tryretrofit.models.Comment;
@@ -13,6 +15,7 @@ import mitso.volodymyr.tryretrofit.models.Photo;
 import mitso.volodymyr.tryretrofit.models.Post;
 import mitso.volodymyr.tryretrofit.models.Todo;
 import mitso.volodymyr.tryretrofit.models.User;
+import mitso.volodymyr.tryretrofit.support.Support;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -33,12 +36,16 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
     private List<Object>        mObjectList;
     private Callback            mCallback;
     private Exception           mException;
+    private Support             mSupport;
+    private ProgressDialog      mProgressDialog;
 
-    public GetObjectsTask(int _objectType, Integer _objectId) {
+    public GetObjectsTask(Context _context, int _objectType, Integer _objectId) {
 
         this.mObjectList = new ArrayList<>();
         this.mObjectType = _objectType;
         this.mObjectId = _objectId;
+        this.mSupport = new Support();
+        this.mProgressDialog = new ProgressDialog(_context);
     }
 
     public void setCallback(Callback _callback) {
@@ -54,6 +61,13 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        mSupport.initProgressDialog(mProgressDialog);
+    }
+
+    @Override
     protected List<Object> doInBackground(Void... _voids) {
 
         try {
@@ -61,46 +75,46 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            final IConnection connection = retrofit.create(IConnection.class);
+            final IApi api = retrofit.create(IApi.class);
 
             if (mObjectType == Constants.OBJECT_TYPE_USER && mObjectId == null) {
 
-                final Call<List<User>> call = connection.getAllUsers();
+                final Call<List<User>> call = api.getAllUsers();
                 final Response<List<User>> response = call.execute();
 
                 mObjectList.addAll(response.body());
 
             } else if (mObjectType == Constants.OBJECT_TYPE_TODO && mObjectId != null) {
 
-                final Call<List<Todo>> call = connection.getTodosByUserId(mObjectId);
+                final Call<List<Todo>> call = api.getTodosByUserId(mObjectId);
                 final Response<List<Todo>> response = call.execute();
 
                 mObjectList.addAll(response.body());
 
             } else if (mObjectType == Constants.OBJECT_TYPE_ALBUM && mObjectId != null) {
 
-                final Call<List<Album>> call = connection.getAlbumsByUserId(mObjectId);
+                final Call<List<Album>> call = api.getAlbumsByUserId(mObjectId);
                 final Response<List<Album>> response = call.execute();
 
                 mObjectList.addAll(response.body());
 
             } else if (mObjectType == Constants.OBJECT_TYPE_POST && mObjectId != null) {
 
-                final Call<List<Post>> call = connection.getPostsByUserId(mObjectId);
+                final Call<List<Post>> call = api.getPostsByUserId(mObjectId);
                 final Response<List<Post>> response = call.execute();
 
                 mObjectList.addAll(response.body());
 
             } else if (mObjectType == Constants.OBJECT_TYPE_PHOTO && mObjectId != null) {
 
-                final Call<List<Photo>> call = connection.getPhotosByAlbumId(mObjectId);
+                final Call<List<Photo>> call = api.getPhotosByAlbumId(mObjectId);
                 final Response<List<Photo>> response = call.execute();
 
                 mObjectList.addAll(response.body());
 
             } else if (mObjectType == Constants.OBJECT_TYPE_COMMENT && mObjectId != null) {
 
-                final Call<List<Comment>> call = connection.getCommentsByPostId(mObjectId);
+                final Call<List<Comment>> call = api.getCommentsByPostId(mObjectId);
                 final Response<List<Comment>> response = call.execute();
 
                 mObjectList.addAll(response.body());
@@ -118,6 +132,8 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
     @Override
     protected void onPostExecute(List<Object> _objectList) {
         super.onPostExecute(_objectList);
+
+        mSupport.dismissProgressDialog(mProgressDialog);
 
         if (mCallback != null) {
             if (mException == null)

@@ -169,7 +169,7 @@ public class CreateObjectFragment extends BaseFragment {
             getIdFromEditText();
             createObject();
 
-            mPostObjectTask = new PostObjectTask(mFragmentType, mObject);
+            mPostObjectTask = new PostObjectTask(mMainActivity, mFragmentType, mObject);
 
             mPostObjectTask.setCallback(new PostObjectTask.Callback() {
                 @Override

@@ -64,7 +64,7 @@ public class UserListFragment extends BaseFragment implements ICommonHandler {
 
     public void getAllUsers() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_USER, null);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_USER, null);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {

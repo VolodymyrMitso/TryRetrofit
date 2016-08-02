@@ -94,7 +94,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
 
     public void getPostsByUserId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_POST, mUserId);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_POST, mUserId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {

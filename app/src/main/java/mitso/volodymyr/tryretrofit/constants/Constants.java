@@ -69,4 +69,8 @@ public class Constants {
     public static final int FRAGMENT_TYPE_POST_INFO         = 7;
     public static final int FRAGMENT_TYPE_COMMENT_LIST      = 8;
     public static final int FRAGMENT_TYPE_COMMENT_INFO      = 9;
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static final int TIME_DELAY_250_MS = 250;
 }

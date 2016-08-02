@@ -93,7 +93,7 @@ public class AlbumListFragment extends BaseFragment implements ICommonHandler {
 
     public void getAlbumsByUserId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_ALBUM, mUserId);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_ALBUM, mUserId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {

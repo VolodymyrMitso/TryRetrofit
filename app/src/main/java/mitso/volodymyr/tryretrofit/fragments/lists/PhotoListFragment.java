@@ -92,7 +92,7 @@ public class PhotoListFragment extends BaseFragment {
 
     public void getPhotosByAlbumId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(Constants.OBJECT_TYPE_PHOTO, mAlbumId);
+        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_PHOTO, mAlbumId);
         getObjectsTask.setCallback(new GetObjectsTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {
