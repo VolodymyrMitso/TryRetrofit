@@ -43,6 +43,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/s_comments"
+                android:theme="@style/stl_btn"
                 app:onClickListener="@{clickerComments}" />
 
         </RelativeLayout>

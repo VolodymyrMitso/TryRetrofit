@@ -10,4 +10,7 @@
     <color name="c_card_line">#3F51B5</color>
     <color name="c_create_object_et">#E3F2FD</color>
 
+    <color name="c_btn_bg">#ff0099cc</color>
+    <color name="c_btn_text">#ffffff</color>
+
 </resources>

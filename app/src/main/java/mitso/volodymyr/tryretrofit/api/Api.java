@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface IApi {
+public interface Api {
 
     @GET("/users")
     Call<List<User>> getAllUsers();

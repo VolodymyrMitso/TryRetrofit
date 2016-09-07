@@ -12,6 +12,7 @@
     <dimen name="d_create_object_id_text_size">17sp</dimen>
     <dimen name="d_create_object_info_text_size">15sp</dimen>
     <dimen name="d_create_object_tv_et_margin">15dp</dimen>
+    <dimen name="d_create_object_tv_et_margin_top">20dp</dimen>
     <dimen name="d_create_object_btn_margin">10dp</dimen>
 
     <dimen name="d_progress_dialog_margin">10dp</dimen>

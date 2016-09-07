@@ -23,7 +23,11 @@
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/d_create_object_tv_et_margin">
+            android:layout_marginTop="@dimen/d_create_object_tv_et_margin_top"
+            android:layout_marginStart="@dimen/d_create_object_tv_et_margin"
+            android:layout_marginRight="@dimen/d_create_object_tv_et_margin"
+            android:layout_marginLeft="@dimen/d_create_object_tv_et_margin"
+            android:layout_marginEnd="@dimen/d_create_object_tv_et_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,6 +75,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/s_post"
+                android:theme="@style/stl_btn"
                 app:onClickListener="@{clickerPost}" />
 
         </RelativeLayout>

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="thm_app" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">@color/c_status_bar</item>
         <item name="colorPrimary">@color/c_action_bar</item>
         <item name="colorAccent">@color/c_accent</item>
+    </style>
+
+    <style name="stl_btn" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/c_btn_bg</item>
+        <item name="android:textColor">@color/c_btn_text</item>
     </style>
 
 </resources>

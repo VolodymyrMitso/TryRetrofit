@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
-import mitso.volodymyr.tryretrofit.api.IApi;
+import mitso.volodymyr.tryretrofit.api.Api;
 import mitso.volodymyr.tryretrofit.constants.Constants;
 import mitso.volodymyr.tryretrofit.models.Comment;
 import mitso.volodymyr.tryretrofit.models.Post;
@@ -70,7 +70,7 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            final IApi api = retrofit.create(IApi.class);
+            final Api api = retrofit.create(Api.class);
 
             if (mObjectType == Constants.OBJECT_TYPE_USER) {
 
