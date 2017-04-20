@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import mitso.volodymyr.tryretrofit.R;
 import mitso.volodymyr.tryretrofit.api.tasks.GetObjectTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
-import mitso.volodymyr.tryretrofit.databinding.FragmentCommentInfoBinding;
+import mitso.volodymyr.tryretrofit.databinding.FragmentInfoCommentBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.CommentListFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
@@ -24,7 +24,7 @@ public class CommentInfoFragment extends BaseFragment {
 
     private Support                         mSupport;
 
-    private FragmentCommentInfoBinding      mBinding;
+    private FragmentInfoCommentBinding      mBinding;
 
     private int                             mUserId;
     private int                             mPostId;
@@ -36,15 +36,13 @@ public class CommentInfoFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
 
-        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_comment_info, _container, false);
+        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_info_comment, _container, false);
         final View rootView = mBinding.getRoot();
 
         Log.i(LOG_TAG, "COMMENT INFO FRAGMENT IS CREATED.");
 
-        mSupport = new Support();
-
-        iniActionBar();
-
+        initSupport();
+        initActionBar();
         receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
@@ -58,7 +56,12 @@ public class CommentInfoFragment extends BaseFragment {
         return rootView;
     }
 
-    private void iniActionBar() {
+    private void initSupport() {
+
+        mSupport = new Support();
+    }
+
+    private void initActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null)
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_comment_info));

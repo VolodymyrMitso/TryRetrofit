@@ -4,6 +4,7 @@
     <dimen name="d_card_margin_small">15dp</dimen>
     <dimen name="d_card_margin_big">30dp</dimen>
     <dimen name="d_card_text_size">15sp</dimen>
+    <dimen name="d_card_line_height">1dp</dimen>
 
     <dimen name="d_object_info_text_size">15sp</dimen>
     <dimen name="d_object_info_tv_margin">15dp</dimen>

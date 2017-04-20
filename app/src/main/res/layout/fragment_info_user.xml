@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/linearLayout"
+            android:layout_above="@+id/rl_buttons_fiu"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/d_object_info_tv_margin"
             android:text="@{user.toString()}"
@@ -39,7 +39,7 @@
             tools:text="user toString()" />
 
         <RelativeLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/rl_buttons_fiu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -52,7 +52,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:text="@string/s_todos"
-                android:theme="@style/stl_btn"
+                android:theme="@style/thm_btn"
                 app:onClickListener="@{clickerTodos}" />
 
             <Button
@@ -61,7 +61,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/s_albums"
-                android:theme="@style/stl_btn"
+                android:theme="@style/thm_btn"
                 app:onClickListener="@{clickerAlbums}" />
 
             <Button
@@ -71,7 +71,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:text="@string/s_posts"
-                android:theme="@style/stl_btn"
+                android:theme="@style/thm_btn"
                 app:onClickListener="@{clickerPosts}" />
 
         </RelativeLayout>

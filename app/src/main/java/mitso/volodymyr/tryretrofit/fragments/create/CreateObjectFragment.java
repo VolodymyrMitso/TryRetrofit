@@ -64,15 +64,14 @@ public class CreateObjectFragment extends BaseFragment {
 
         Log.i(LOG_TAG, "CREATE OBJECT FRAGMENT IS CREATED.");
 
-        mSupport = new Support();
-
         receiveFragmentType();
         receiveIdArray();
 
-        iniActionBar();
-        setHasOptionsMenu(true);
-
+        initSupport();
+        initActionBar();
         initButtons();
+
+        setHasOptionsMenu(true);
 
         return rootView;
     }
@@ -111,9 +110,18 @@ public class CreateObjectFragment extends BaseFragment {
         }
     }
 
-    private void iniActionBar() {
+    private void initSupport() {
+
+        mSupport = new Support();
+    }
+
+    private void initActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null) {
+
+            mMainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mMainActivity.getSupportActionBar().setHomeButtonEnabled(true);
+            mMainActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             if (mFragmentType == Constants.FRAGMENT_TYPE_USER_LIST || mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO)
                 mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_create_user));
@@ -135,14 +143,6 @@ public class CreateObjectFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu _menu, MenuInflater _inflater) {
-        super.onCreateOptionsMenu(_menu, _inflater);
-
-        final MenuItem menuItem = _menu.findItem(R.id.mi_create_object);
-        menuItem.setVisible(false);
-    }
-
     private void initButtons() {
 
         mBinding.setClickerPost(new View.OnClickListener() {
@@ -162,6 +162,14 @@ public class CreateObjectFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu _menu, MenuInflater _inflater) {
+        super.onCreateOptionsMenu(_menu, _inflater);
+
+        final MenuItem menuItem = _menu.findItem(R.id.mi_create_object);
+        menuItem.setVisible(false);
+    }
+
     public void postObject() {
 
         if (mPostObjectTask == null || mPostObjectTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
@@ -170,7 +178,6 @@ public class CreateObjectFragment extends BaseFragment {
             createObject();
 
             mPostObjectTask = new PostObjectTask(mMainActivity, mFragmentType, mObject);
-
             mPostObjectTask.setCallback(new PostObjectTask.Callback() {
                 @Override
                 public void onSuccess(Object _result) {
@@ -182,7 +189,6 @@ public class CreateObjectFragment extends BaseFragment {
 
                     mPostObjectTask.releaseCallback();
                 }
-
                 @Override
                 public void onFailure(Throwable _error) {
 
@@ -194,7 +200,6 @@ public class CreateObjectFragment extends BaseFragment {
                     mPostObjectTask.releaseCallback();
                 }
             });
-
             mPostObjectTask.execute();
 
         } else {
@@ -207,7 +212,7 @@ public class CreateObjectFragment extends BaseFragment {
     private void getIdFromEditText() {
 
         try {
-            mId = Integer.parseInt(mBinding.etId.getText().toString());
+            mId = Integer.parseInt(mBinding.etIdFco.getText().toString());
 
             isIdNull = false;
             Log.i(LOG_TAG, "ID FROM EDIT TEXT IS: " + String.valueOf(mId) + ".");
@@ -223,64 +228,47 @@ public class CreateObjectFragment extends BaseFragment {
 
         mObject = new Object();
 
-        if (isIdNull) {
+        if (mFragmentType == Constants.FRAGMENT_TYPE_USER_LIST || mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO) {
 
-            if (mFragmentType == Constants.FRAGMENT_TYPE_USER_LIST || mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO)
-                mObject = new User();
-
-            else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST)
-                mObject = new Todo();
-
-            else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST)
-                mObject = new Album();
-
-            else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO)
-                mObject = new Post();
-
-            else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST)
-                mObject = new Photo();
-
-            else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO)
-                mObject = new Comment();
-
-        } else {
-
-            if (mFragmentType == Constants.FRAGMENT_TYPE_USER_LIST || mFragmentType == Constants.FRAGMENT_TYPE_USER_INFO) {
-
-                final User user = new User();
+            final User user = new User();
+            if (!isIdNull)
                 user.setId(mId);
-                mObject = user;
+            mObject = user;
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST) {
+        } else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST) {
 
-                final Todo todo = new Todo();
+            final Todo todo = new Todo();
+            if (!isIdNull)
                 todo.setId(mId);
-                mObject = todo;
+            mObject = todo;
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST) {
+        } else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST) {
 
-                final Album album = new Album();
+            final Album album = new Album();
+            if (!isIdNull)
                 album.setId(mId);
-                mObject = album;
+            mObject = album;
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO) {
+        } else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO) {
 
-                final Post post = new Post();
+            final Post post = new Post();
+            if (!isIdNull)
                 post.setId(mId);
-                mObject = post;
+            mObject = post;
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST) {
+        } else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST) {
 
-                final Photo photo = new Photo();
+            final Photo photo = new Photo();
+            if (!isIdNull)
                 photo.setId(mId);
-                mObject = photo;
+            mObject = photo;
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO) {
+        } else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO) {
 
-                final Comment comment = new Comment();
+            final Comment comment = new Comment();
+            if (!isIdNull)
                 comment.setId(mId);
-                mObject = comment;
-            }
+            mObject = comment;
         }
     }
 

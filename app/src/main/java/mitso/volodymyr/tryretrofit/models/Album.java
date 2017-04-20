@@ -4,60 +4,30 @@ package mitso.volodymyr.tryretrofit.models;
 
 public class Album {
 
-    private int userId;
-    private int id;
-    private String title;
+    private Integer     userId;
+    private Integer     id;
+    private String      title;
 
-    /**
-     *
-     * @return
-     * The userId
-     */
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    /**
-     *
-     * @param userId
-     * The userId
-     */
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    /**
-     *
-     * @return
-     * The id
-     */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     * The id
-     */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     * The title
-     */
     public String getTitle() {
         return title;
     }
 
-    /**
-     *
-     * @param title
-     * The title
-     */
     public void setTitle(String title) {
         this.title = title;
     }

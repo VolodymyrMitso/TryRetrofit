@@ -1,7 +1,6 @@
 package mitso.volodymyr.tryretrofit;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +12,8 @@ import mitso.volodymyr.tryretrofit.fragments.lists.UserListFragment;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_main);
 
         commitFragment(new UserListFragment(), null);
@@ -26,22 +25,19 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fl_container, _baseFragment)
+                .replace(R.id.fl_container_am, _baseFragment)
                 .commitAllowingStateLoss();
     }
 
     public void commit10thFragment(Bundle _bundle) {
 
-        final CreateObjectFragment createObjectFragment = new CreateObjectFragment();
-
-        commitFragment(createObjectFragment, _bundle);
+        commitFragment(new CreateObjectFragment(), _bundle);
     }
 
     @Override
     public void onBackPressed() {
 
-        final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container_am);
         baseFragment.onBackPressed();
     }
 
@@ -55,13 +51,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem _item) {
 
+        final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container_am);
+
         switch (_item.getItemId()) {
-            case R.id.mi_create_object:
 
-                final BaseFragment baseFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
-                baseFragment.onOptionsItemSelected();
-
+            case android.R.id.home:
+                baseFragment.onBackPressed();
                 return true;
+
+            case R.id.mi_create_object:
+                baseFragment.onOptionsItemSelected();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(_item);
         }

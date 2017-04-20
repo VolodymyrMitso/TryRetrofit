@@ -4,80 +4,40 @@ package mitso.volodymyr.tryretrofit.models;
 
 public class Todo {
 
-    private int userId;
-    private int id;
-    private String title;
-    private boolean completed;
+    private Integer     userId;
+    private Integer     id;
+    private String      title;
+    private Boolean     completed;
 
-    /**
-     *
-     * @return
-     * The userId
-     */
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    /**
-     *
-     * @param userId
-     * The userId
-     */
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    /**
-     *
-     * @return
-     * The id
-     */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     * The id
-     */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     * The title
-     */
     public String getTitle() {
         return title;
     }
 
-    /**
-     *
-     * @param title
-     * The title
-     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /**
-     *
-     * @return
-     * The completed
-     */
-    public boolean isCompleted() {
+    public Boolean getCompleted() {
         return completed;
     }
 
-    /**
-     *
-     * @param completed
-     * The completed
-     */
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 

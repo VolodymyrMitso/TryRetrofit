@@ -31,7 +31,7 @@ import mitso.volodymyr.tryretrofit.recyclerview.viewholders.UserViewHolder;
 
 public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String LOG_TAG = Constants.COMMON_ADAPTER_LOG_TAG;
+    private final String        LOG_TAG = Constants.COMMON_ADAPTER_LOG_TAG;
 
     private List<Object>        mObjectList;
     private int                 mViewType;
@@ -50,22 +50,23 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (mViewType == Constants.VIEW_TYPE_USER)
             return new UserViewHolder(CardUserBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else if (mViewType == Constants.VIEW_TYPE_TODO)
+        if (mViewType == Constants.VIEW_TYPE_TODO)
             return new TodoViewHolder(CardTodoBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else if (mViewType == Constants.VIEW_TYPE_ALBUM)
+        if (mViewType == Constants.VIEW_TYPE_ALBUM)
             return new AlbumViewHolder(CardAlbumBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else if (mViewType == Constants.VIEW_TYPE_POST)
+        if (mViewType == Constants.VIEW_TYPE_POST)
             return new PostViewHolder(CardPostBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else if (mViewType == Constants.VIEW_TYPE_PHOTO)
+        if (mViewType == Constants.VIEW_TYPE_PHOTO)
             return new PhotoViewHolder(CardPhotoBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else if (mViewType == Constants.VIEW_TYPE_COMMENT)
+        if (mViewType == Constants.VIEW_TYPE_COMMENT)
             return new CommentViewHolder(CardCommentBinding.inflate(LayoutInflater.from(_parent.getContext()), _parent, false).getRoot());
 
-        else return null;
+        else
+            return null;
     }
 
     @Override
@@ -80,18 +81,22 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             userViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.itemOnClick(user, userViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(user);
                 }
             });
+            return;
+        }
 
-        } else if (mViewType == Constants.VIEW_TYPE_TODO) {
+        if (mViewType == Constants.VIEW_TYPE_TODO) {
 
             final Todo todo = (Todo) mObjectList.get(_position);
             final TodoViewHolder todoViewHolder = (TodoViewHolder) _holder;
 
             todoViewHolder.getBinding().setTodo(todo);
+            return;
+        }
 
-        } else if (mViewType == Constants.VIEW_TYPE_ALBUM) {
+        if (mViewType == Constants.VIEW_TYPE_ALBUM) {
 
             final Album album = (Album) mObjectList.get(_position);
             final AlbumViewHolder albumViewHolder = (AlbumViewHolder) _holder;
@@ -100,11 +105,13 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             albumViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.itemOnClick(album, albumViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(album);
                 }
             });
+            return;
+        }
 
-        } else if (mViewType == Constants.VIEW_TYPE_POST) {
+        if (mViewType == Constants.VIEW_TYPE_POST) {
 
             final Post post = (Post) mObjectList.get(_position);
             final PostViewHolder postViewHolder = (PostViewHolder) _holder;
@@ -113,18 +120,22 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             postViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.itemOnClick(post, postViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(post);
                 }
             });
+            return;
+        }
 
-        } else if (mViewType == Constants.VIEW_TYPE_PHOTO) {
+        if (mViewType == Constants.VIEW_TYPE_PHOTO) {
 
             final Photo photo = (Photo) mObjectList.get(_position);
             final PhotoViewHolder photoViewHolder = (PhotoViewHolder) _holder;
 
             photoViewHolder.getBinding().setPhoto(photo);
+            return;
+        }
 
-        } else if (mViewType == Constants.VIEW_TYPE_COMMENT) {
+        if (mViewType == Constants.VIEW_TYPE_COMMENT) {
 
             final Comment comment = (Comment) mObjectList.get(_position);
             final CommentViewHolder commentViewHolder = (CommentViewHolder) _holder;
@@ -133,7 +144,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             commentViewHolder.getBinding().setClicker(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCommonHandler.itemOnClick(comment, commentViewHolder.getAdapterPosition());
+                    mCommonHandler.itemOnClick(comment);
                 }
             });
         }
@@ -148,7 +159,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void setCommonHandler(ICommonHandler _commonHandler) {
 
         if (mCommonHandler == null) {
-            this.mCommonHandler = _commonHandler;
+            mCommonHandler = _commonHandler;
             Log.i(LOG_TAG, "HANDLER IS SET.");
         }
     }
@@ -156,7 +167,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void releaseCommonHandler() {
 
         if (mCommonHandler != null) {
-            this.mCommonHandler = null;
+            mCommonHandler = null;
             Log.i(LOG_TAG, "HANDLER IS NULL.");
         }
     }

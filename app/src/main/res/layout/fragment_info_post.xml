@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/linearLayout"
+            android:layout_above="@+id/rl_comments_fip"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/d_object_info_tv_margin"
             android:text="@{post.toString()}"
@@ -31,7 +31,7 @@
             tools:text="post toString()" />
 
         <RelativeLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/rl_comments_fip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -43,7 +43,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/s_comments"
-                android:theme="@style/stl_btn"
+                android:theme="@style/thm_btn"
                 app:onClickListener="@{clickerComments}" />
 
         </RelativeLayout>

@@ -21,11 +21,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
+public class GetObjectListTask extends AsyncTask<Void, Void, List<Object>> {
 
     public String               LOG_TAG = Constants.GET_OBJECTS_TASK_LOG_TAG;
 
-    public interface Callback{
+    public interface Callback {
 
         void onSuccess(List<Object> _result);
         void onFailure(Throwable _error);
@@ -39,7 +39,7 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
     private Support             mSupport;
     private ProgressDialog      mProgressDialog;
 
-    public GetObjectsTask(Context _context, int _objectType, Integer _objectId) {
+    public GetObjectListTask(Context _context, int _objectType, Integer _objectId) {
 
         this.mObjectList = new ArrayList<>();
         this.mObjectType = _objectType;
@@ -83,41 +83,52 @@ public class GetObjectsTask extends AsyncTask<Void, Void, List<Object>> {
                 final Response<List<User>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_TODO && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_TODO && mObjectId != null) {
 
                 final Call<List<Todo>> call = api.getTodosByUserId(mObjectId);
                 final Response<List<Todo>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_ALBUM && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_ALBUM && mObjectId != null) {
 
                 final Call<List<Album>> call = api.getAlbumsByUserId(mObjectId);
                 final Response<List<Album>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_POST && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_POST && mObjectId != null) {
 
                 final Call<List<Post>> call = api.getPostsByUserId(mObjectId);
                 final Response<List<Post>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_PHOTO && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_PHOTO && mObjectId != null) {
 
                 final Call<List<Photo>> call = api.getPhotosByAlbumId(mObjectId);
                 final Response<List<Photo>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_COMMENT && mObjectId != null) {
+            if (mObjectType == Constants.OBJECT_TYPE_COMMENT && mObjectId != null) {
 
                 final Call<List<Comment>> call = api.getCommentsByPostId(mObjectId);
                 final Response<List<Comment>> response = call.execute();
 
                 mObjectList.addAll(response.body());
+                return null;
             }
 
         } catch (Exception _error) {

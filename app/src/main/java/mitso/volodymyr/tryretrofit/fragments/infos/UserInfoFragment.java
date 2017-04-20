@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import mitso.volodymyr.tryretrofit.R;
 import mitso.volodymyr.tryretrofit.api.tasks.GetObjectTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
-import mitso.volodymyr.tryretrofit.databinding.FragmentUserInfoBinding;
+import mitso.volodymyr.tryretrofit.databinding.FragmentInfoUserBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.AlbumListFragment;
 import mitso.volodymyr.tryretrofit.fragments.lists.PostListFragment;
@@ -22,11 +22,11 @@ import mitso.volodymyr.tryretrofit.support.Support;
 
 public class UserInfoFragment extends BaseFragment {
 
-    private final String                    LOG_TAG = Constants.USER_INFO_FRAGMENT_LOG_TAG;
+    private String                          LOG_TAG = Constants.USER_INFO_FRAGMENT_LOG_TAG;
 
     private Support                         mSupport;
 
-    private FragmentUserInfoBinding         mBinding;
+    private FragmentInfoUserBinding         mBinding;
 
     private int                             mUserId;
     private int[]                           mIdArray;
@@ -36,15 +36,13 @@ public class UserInfoFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
 
-        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_user_info, _container, false);
+        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_info_user, _container, false);
         final View rootView = mBinding.getRoot();
 
         Log.i(LOG_TAG, "USER INFO FRAGMENT IS CREATED.");
 
-        mSupport = new Support();
-
-        iniActionBar();
-
+        initSupport();
+        initActionBar();
         receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
@@ -58,10 +56,21 @@ public class UserInfoFragment extends BaseFragment {
         return rootView;
     }
 
-    private void iniActionBar() {
+    private void initSupport() {
 
-        if (mMainActivity.getSupportActionBar() != null)
+        mSupport = new Support();
+    }
+
+    private void initActionBar() {
+
+        if (mMainActivity.getSupportActionBar() != null) {
+
+            mMainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mMainActivity.getSupportActionBar().setHomeButtonEnabled(true);
+            mMainActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_user_info));
+        }
     }
 
     private void receiveIdArray() {
@@ -143,7 +152,6 @@ public class UserInfoFragment extends BaseFragment {
                 mMainActivity.commitFragment(new PostListFragment(), bundle);
             }
         });
-
     }
 
     @Override

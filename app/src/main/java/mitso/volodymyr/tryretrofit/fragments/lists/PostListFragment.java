@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mitso.volodymyr.tryretrofit.R;
-import mitso.volodymyr.tryretrofit.api.tasks.GetObjectsTask;
+import mitso.volodymyr.tryretrofit.api.tasks.GetObjectListTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
-import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
+import mitso.volodymyr.tryretrofit.databinding.FragmentListCommonBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.fragments.infos.PostInfoFragment;
 import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
@@ -31,7 +31,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
 
     private Support                         mSupport;
 
-    private FragmentCommonListBinding       mBinding;
+    private FragmentListCommonBinding       mBinding;
 
     private List<Object>                    mPostList;
     private CommonAdapter                   mCommonAdapter;
@@ -44,15 +44,13 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
     @Override
     public View onCreateView(LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
 
-        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_common_list, _container, false);
+        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_list_common, _container, false);
         final View rootView = mBinding.getRoot();
 
         Log.i(LOG_TAG, "POST LIST FRAGMENT IS CREATED.");
 
-        mSupport = new Support();
-
-        iniActionBar();
-
+        initSupport();
+        initActionBar();
         receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
@@ -66,7 +64,12 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
         return rootView;
     }
 
-    private void iniActionBar() {
+    private void initSupport() {
+
+        mSupport = new Support();
+    }
+
+    private void initActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null)
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_posts));
@@ -94,42 +97,42 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
 
     public void getPostsByUserId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_POST, mUserId);
-        getObjectsTask.setCallback(new GetObjectsTask.Callback() {
+        final GetObjectListTask getObjectListTask = new GetObjectListTask(mMainActivity, Constants.OBJECT_TYPE_POST, mUserId);
+        getObjectListTask.setCallback(new GetObjectListTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS: POST LIST.");
+                Log.i(getObjectListTask.LOG_TAG, "ON SUCCESS: POST LIST.");
 
                 mPostList = new ArrayList<>(_result);
 
                 initRecyclerView();
                 setHandler();
 
-                getObjectsTask.releaseCallback();
+                getObjectListTask.releaseCallback();
             }
 
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.e(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
+                Log.e(getObjectListTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
 
-                getObjectsTask.releaseCallback();
+                getObjectListTask.releaseCallback();
             }
         });
-        getObjectsTask.execute();
+        getObjectListTask.execute();
     }
 
     private void initRecyclerView() {
 
         mCommonAdapter = new CommonAdapter(Constants.VIEW_TYPE_POST, mPostList);
 
-        mBinding.rvModels.setAdapter(mCommonAdapter);
-        mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
-        mBinding.rvModels.addItemDecoration(new ItemDecoration(
+        mBinding.rvModelsFlc.setAdapter(mCommonAdapter);
+        mBinding.rvModelsFlc.setLayoutManager(new LinearLayoutManager(mMainActivity));
+        mBinding.rvModelsFlc.addItemDecoration(new ItemDecoration(
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_small),
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_big)));
 
@@ -163,7 +166,7 @@ public class PostListFragment extends BaseFragment implements ICommonHandler {
     }
 
     @Override
-    public void itemOnClick(Object _object, int _position) {
+    public void itemOnClick(Object _object) {
 
         final int postId = ((Post) _object).getId();
         final int[] idArray = new int[] { mUserId, postId };

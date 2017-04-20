@@ -83,8 +83,10 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<User> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
+            }
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST) {
+            if (mFragmentType == Constants.FRAGMENT_TYPE_TODO_LIST) {
 
                 final Todo todo = (Todo) mObjectPost;
 
@@ -92,8 +94,10 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<Todo> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
+            }
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST) {
+            if (mFragmentType == Constants.FRAGMENT_TYPE_ALBUM_LIST) {
 
                 final Album album = (Album) mObjectPost;
 
@@ -101,8 +105,10 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<Album> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
+            }
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST) {
+            if (mFragmentType == Constants.FRAGMENT_TYPE_POST_LIST || mFragmentType == Constants.FRAGMENT_TYPE_POST_INFO) {
 
                 final Post post = (Post) mObjectPost;
 
@@ -110,8 +116,10 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<Post> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
+            }
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST) {
+            if (mFragmentType == Constants.FRAGMENT_TYPE_PHOTO_LIST) {
 
                 final Photo photo = (Photo) mObjectPost;
 
@@ -119,8 +127,10 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<Photo> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
+            }
 
-            } else if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO) {
+            if (mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_LIST || mFragmentType == Constants.FRAGMENT_TYPE_COMMENT_INFO) {
 
                 final Comment comment = (Comment) mObjectPost;
 
@@ -128,6 +138,7 @@ public class PostObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<Comment> response = call.execute();
 
                 mObjectResponse = response.body();
+                return null;
             }
 
         } catch (Exception _error) {

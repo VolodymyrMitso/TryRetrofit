@@ -21,14 +21,14 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
 
     public String               LOG_TAG = Constants.GET_OBJECT_TASK_LOG_TAG;
 
-    public interface Callback{
+    public interface Callback {
 
         void onSuccess(Object _result);
         void onFailure(Throwable _error);
     }
 
     private int                 mObjectType;
-    private int                 mObjectId;
+    private Integer             mObjectId;
     private Object              mObject;
     private Callback            mCallback;
     private Exception           mException;
@@ -78,20 +78,25 @@ public class GetObjectTask extends AsyncTask<Void, Void, Object> {
                 final Response<User> response = call.execute();
 
                 mObject = response.body();
+                return null;
+            }
 
-            } else if (mObjectType == Constants.OBJECT_TYPE_POST) {
+            if (mObjectType == Constants.OBJECT_TYPE_POST) {
 
                 final Call<Post> call = api.getPostById(mObjectId);
                 final Response<Post> response = call.execute();
 
                 mObject = response.body();
+                return null;
+            }
 
-        } else if (mObjectType == Constants.OBJECT_TYPE_COMMENT) {
+            if (mObjectType == Constants.OBJECT_TYPE_COMMENT) {
 
                 final Call<Comment> call = api.getCommentById(mObjectId);
                 final Response<Comment> response = call.execute();
 
                 mObject = response.body();
+                return null;
             }
 
         } catch (Exception _error) {

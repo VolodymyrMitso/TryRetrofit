@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mitso.volodymyr.tryretrofit.R;
-import mitso.volodymyr.tryretrofit.api.tasks.GetObjectsTask;
+import mitso.volodymyr.tryretrofit.api.tasks.GetObjectListTask;
 import mitso.volodymyr.tryretrofit.constants.Constants;
-import mitso.volodymyr.tryretrofit.databinding.FragmentCommonListBinding;
+import mitso.volodymyr.tryretrofit.databinding.FragmentListCommonBinding;
 import mitso.volodymyr.tryretrofit.fragments.BaseFragment;
 import mitso.volodymyr.tryretrofit.fragments.infos.UserInfoFragment;
 import mitso.volodymyr.tryretrofit.recyclerview.CommonAdapter;
@@ -24,11 +24,11 @@ import mitso.volodymyr.tryretrofit.support.Support;
 
 public class TodoListFragment extends BaseFragment {
 
-    private final String                    LOG_TAG = Constants.TODO_LIST_FRAGMENT_LOG_TAG;
+    private String                          LOG_TAG = Constants.TODO_LIST_FRAGMENT_LOG_TAG;
 
     private Support                         mSupport;
 
-    private FragmentCommonListBinding       mBinding;
+    private FragmentListCommonBinding       mBinding;
 
     private List<Object>                    mTodoList;
 
@@ -40,15 +40,15 @@ public class TodoListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {
 
-        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_common_list, _container, false);
+        mBinding = DataBindingUtil.inflate(_inflater, R.layout.fragment_list_common, _container, false);
         final View rootView = mBinding.getRoot();
 
         Log.i(LOG_TAG, "TODO LIST FRAGMENT IS CREATED.");
 
         mSupport = new Support();
 
-        iniActionBar();
-
+        initSupport();
+        initActionBar();
         receiveIdArray();
 
         if (mSupport.checkNetworkConnection(mMainActivity))
@@ -62,7 +62,12 @@ public class TodoListFragment extends BaseFragment {
         return rootView;
     }
 
-    private void iniActionBar() {
+    private void initSupport() {
+
+        mSupport = new Support();
+    }
+
+    private void initActionBar() {
 
         if (mMainActivity.getSupportActionBar() != null)
             mMainActivity.getSupportActionBar().setTitle(mMainActivity.getResources().getString(R.string.s_todos));
@@ -90,39 +95,39 @@ public class TodoListFragment extends BaseFragment {
 
     public void getTodosByUserId() {
 
-        final GetObjectsTask getObjectsTask = new GetObjectsTask(mMainActivity, Constants.OBJECT_TYPE_TODO, mUserId);
-        getObjectsTask.setCallback(new GetObjectsTask.Callback() {
+        final GetObjectListTask getObjectListTask = new GetObjectListTask(mMainActivity, Constants.OBJECT_TYPE_TODO, mUserId);
+        getObjectListTask.setCallback(new GetObjectListTask.Callback() {
             @Override
             public void onSuccess(List<Object> _result) {
 
-                Log.i(getObjectsTask.LOG_TAG, "ON SUCCESS: TODO LIST.");
+                Log.i(getObjectListTask.LOG_TAG, "ON SUCCESS: TODO LIST.");
 
                 mTodoList = new ArrayList<>(_result);
 
                 initRecyclerView();
 
-                getObjectsTask.releaseCallback();
+                getObjectListTask.releaseCallback();
             }
 
             @Override
             public void onFailure(Throwable _error) {
 
-                Log.e(getObjectsTask.LOG_TAG, "ON FAILURE: ERROR.");
+                Log.e(getObjectListTask.LOG_TAG, "ON FAILURE: ERROR.");
                 _error.printStackTrace();
 
                 mSupport.showToastError(mMainActivity);
 
-                getObjectsTask.releaseCallback();
+                getObjectListTask.releaseCallback();
             }
         });
-        getObjectsTask.execute();
+        getObjectListTask.execute();
     }
 
     private void initRecyclerView() {
 
-        mBinding.rvModels.setAdapter(new CommonAdapter(Constants.VIEW_TYPE_TODO, mTodoList));
-        mBinding.rvModels.setLayoutManager(new LinearLayoutManager(mMainActivity));
-        mBinding.rvModels.addItemDecoration(new ItemDecoration(
+        mBinding.rvModelsFlc.setAdapter(new CommonAdapter(Constants.VIEW_TYPE_TODO, mTodoList));
+        mBinding.rvModelsFlc.setLayoutManager(new LinearLayoutManager(mMainActivity));
+        mBinding.rvModelsFlc.addItemDecoration(new ItemDecoration(
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_small),
                 mMainActivity.getResources().getDimensionPixelSize(R.dimen.d_card_margin_big)));
 

@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/c_accent</item>
     </style>
 
-    <style name="stl_btn" parent="Widget.AppCompat.Button.Colored">
+    <style name="thm_btn" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/c_btn_bg</item>
         <item name="android:textColor">@color/c_btn_text</item>
     </style>

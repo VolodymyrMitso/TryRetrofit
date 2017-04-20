@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/ll_id_fco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d_create_object_tv_et_margin_top"
@@ -38,7 +38,7 @@
                 tools:text="ID: " />
 
             <EditText
-                android:id="@+id/et_id"
+                android:id="@+id/et_id_fco"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/c_create_object_et"
@@ -52,10 +52,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/linearLayout2"
+            android:layout_above="@+id/rl_post_fco"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayout1"
+            android:layout_below="@+id/ll_id_fco"
             android:layout_margin="@dimen/d_create_object_tv_et_margin"
             android:text="@{object.toString()}"
             android:textColor="@color/c_text"
@@ -63,7 +63,7 @@
             tools:text="object toString()" />
 
         <RelativeLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/rl_post_fco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -75,7 +75,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/s_post"
-                android:theme="@style/stl_btn"
+                android:theme="@style/thm_btn"
                 app:onClickListener="@{clickerPost}" />
 
         </RelativeLayout>
